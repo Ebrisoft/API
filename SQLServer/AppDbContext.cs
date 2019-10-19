@@ -26,6 +26,8 @@ namespace SQLServer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder = modelBuilder ?? throw new ArgumentNullException(nameof(modelBuilder));
+
             modelBuilder.Entity<Issue>().HasData(
                 new Issue
                 {

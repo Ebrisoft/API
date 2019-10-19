@@ -46,6 +46,7 @@ namespace SQLServer.Repositories
             return true;
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<IEnumerable<IIssue>> GetAllIssues()
         {
             return context.Issues;
@@ -55,5 +56,6 @@ namespace SQLServer.Repositories
         {
             return context.Issues.FirstOrDefault(i => i.Id == id);
         }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     }
 }
