@@ -10,5 +10,7 @@ namespace Abstractions.Repositories
         //  =======
 
         public Task<IEnumerable<IIssue>> GetAllIssues();
+        public Task<IIssue> GetIssueById(int id);
+        public Task<bool> CreateIssue(string content);
     }
 }

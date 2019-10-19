@@ -1,5 +1,6 @@
 ﻿using Abstractions.Models;
 using Abstractions.Repositories;
+using API.Endpoints;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace API.Controllers.Tenant
 {
-    [Route("api/v1/tenant")]
     [ApiController]
     public class FeedController : ControllerBase
     {
@@ -28,8 +28,7 @@ namespace API.Controllers.Tenant
         //  Methods
         //  =======
 
-        // POST: api/v1/tenant/getfeed
-        [HttpPost("getfeed")]
+        [HttpPost(TenantEndpoints.GetFeed)]
         public async Task<ActionResult<IEnumerable<Issue>>> GetFeed()
         {
             IEnumerable<IIssue> searchResults = await issueRepository.GetAllIssues().ConfigureAwait(false);
