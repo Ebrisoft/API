@@ -38,6 +38,10 @@ namespace SQLServer.Repositories
             {
                 await context.SaveChangesAsync().ConfigureAwait(false);
             }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
+            {
+                return false;
+            }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException)
             {
                 return false;
