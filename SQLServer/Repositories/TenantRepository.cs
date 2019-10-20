@@ -53,5 +53,10 @@ namespace SQLServer.Repositories
 
             return result.Succeeded;
         }
+
+        public async Task SignOutTenant()
+        {
+            await signInManager.SignOutAsync().ConfigureAwait(false);
+        }
     }
 }

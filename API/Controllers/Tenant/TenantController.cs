@@ -79,5 +79,12 @@ namespace API.Controllers.Tenant
 
             return NoContent();
         }
+
+        [HttpPost(TenantEndpoints.SignOut)]
+        public async Task<ActionResult> SignOut()
+        {
+            await tenantRepository.SignOutTenant().ConfigureAwait(false);
+            return NoContent();
+        }
     }
 }
