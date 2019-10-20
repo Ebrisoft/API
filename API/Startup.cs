@@ -42,12 +42,7 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-#if DEBUG
-            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DebugConnection")));
-#else
-#error No Release Database has been configured
-            throw new Exception("No Release Database has been configured");
-#endif
+            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
 
             services.AddScoped<IIssueRepository, IssueRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
