@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace API.Requests.Tenant
 {
-    public class RegisterTenant
+    public class Register
     {
         //  Properties
         //  ==========

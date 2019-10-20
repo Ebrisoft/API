@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,8 +32,8 @@ namespace API.Controllers.Tenant
         //  Methods
         //  =======
 
-        [HttpPost(TenantEndpoints.RegisterTenant)]
-        public async Task<ActionResult> RegisterTenant(RegisterTenant request)
+        [HttpPost(TenantEndpoints.Register)]
+        public async Task<ActionResult> Register(Register request)
         {
             if (request == null)
             {

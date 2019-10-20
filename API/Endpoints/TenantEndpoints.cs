@@ -20,7 +20,7 @@ namespace API.Endpoints
 
         //  Tenant
 
-        public const string RegisterTenant = TenantBase + "registertenant";
+        public const string Register = TenantBase + "register";
         public const string SignIn = TenantBase + "signin";
     }
 }
