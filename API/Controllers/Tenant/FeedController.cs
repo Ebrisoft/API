@@ -1,7 +1,7 @@
 ﻿using Abstractions.Models;
 using Abstractions.Repositories;
 using API.Endpoints;
-using API.Models;
+using API.Models.Tenant;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;

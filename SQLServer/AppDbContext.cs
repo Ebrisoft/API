@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SQLServer.Models;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace SQLServer
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext
     {
         //  Properties
         //  ==========
@@ -26,6 +27,8 @@ namespace SQLServer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder = modelBuilder ?? throw new ArgumentNullException(nameof(modelBuilder));
 
             modelBuilder.Entity<Issue>().HasData(
@@ -39,8 +42,6 @@ namespace SQLServer
                     Id = 2,
                     Content = "I am #2"
                 });
-
-            base.OnModelCreating(modelBuilder);
         }
     }
 }

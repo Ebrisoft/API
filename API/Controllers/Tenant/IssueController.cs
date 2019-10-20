@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Abstractions.Models;
 using Abstractions.Repositories;
 using API.Endpoints;
-using API.Models;
+using API.Models.Tenant;
 using API.Requests;
 using API.Requests.Tenant;
 using Microsoft.AspNetCore.Http;

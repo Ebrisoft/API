@@ -17,5 +17,9 @@ namespace API.Endpoints
 
         public const string GetIssue = TenantBase + "getissue";
         public const string CreateIssue = TenantBase + "createissue";
+
+        //  Tenant
+
+        public const string RegisterTenant = TenantBase + "registertenant";
     }
 }
