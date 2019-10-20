@@ -12,26 +12,19 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		DebugInMemory|Any CPU = DebugInMemory|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4E071054-E57B-41A5-9AB4-6F935200EDF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4E071054-E57B-41A5-9AB4-6F935200EDF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E071054-E57B-41A5-9AB4-6F935200EDF6}.DebugInMemory|Any CPU.ActiveCfg = Debug In Memory|Any CPU
-		{4E071054-E57B-41A5-9AB4-6F935200EDF6}.DebugInMemory|Any CPU.Build.0 = Debug In Memory|Any CPU
 		{4E071054-E57B-41A5-9AB4-6F935200EDF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E071054-E57B-41A5-9AB4-6F935200EDF6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B5489884-40E5-4E63-B6D5-B3DC64414D6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5489884-40E5-4E63-B6D5-B3DC64414D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5489884-40E5-4E63-B6D5-B3DC64414D6A}.DebugInMemory|Any CPU.ActiveCfg = Debug In Memory|Any CPU
-		{B5489884-40E5-4E63-B6D5-B3DC64414D6A}.DebugInMemory|Any CPU.Build.0 = Debug In Memory|Any CPU
 		{B5489884-40E5-4E63-B6D5-B3DC64414D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5489884-40E5-4E63-B6D5-B3DC64414D6A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD7D3C8F-6927-44A7-A780-66CE2BB8E51A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD7D3C8F-6927-44A7-A780-66CE2BB8E51A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD7D3C8F-6927-44A7-A780-66CE2BB8E51A}.DebugInMemory|Any CPU.ActiveCfg = Debug In Memory|Any CPU
-		{AD7D3C8F-6927-44A7-A780-66CE2BB8E51A}.DebugInMemory|Any CPU.Build.0 = Debug In Memory|Any CPU
 		{AD7D3C8F-6927-44A7-A780-66CE2BB8E51A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD7D3C8F-6927-44A7-A780-66CE2BB8E51A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

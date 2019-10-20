@@ -44,13 +44,13 @@ namespace API
         {
 #if DEBUG
             services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DebugConnection")));
-            services.AddScoped<IIssueRepository, IssueRepository>();
-#elif RELEASE
+#else
 #error No Release Database has been configured
             throw new Exception("No Release Database has been configured");
-#else
-            services.AddSingleton<IIssueRepository, MockIssueRepository>();
 #endif
+
+            services.AddScoped<IIssueRepository, IssueRepository>();
+            services.AddScoped<ITenantRepository, TenantRepository>();
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
