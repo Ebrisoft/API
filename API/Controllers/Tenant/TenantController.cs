@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abstractions.Models;
+using Abstractions.Repositories;
 using API.Endpoints;
 using API.Models;
 using API.Requests.Tenant;
@@ -17,48 +19,45 @@ namespace API.Controllers.Tenant
         //  Variables
         //  =========
 
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly ITenantRepository tenantRepository;
 
         //  Constructors
         //  ============
 
-        public TenantController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public TenantController(ITenantRepository tenantRepository)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            this.tenantRepository = tenantRepository;
         }
 
         //  Methods
         //  =======
 
         [HttpPost(TenantEndpoints.RegisterTenant)]
-        public async Task<ActionResult> RegisterTenant(RegisterTenant registerTenant)
+        public async Task<ActionResult> RegisterTenant(RegisterTenant request)
         {
-            if (registerTenant == null)
+            if (request == null)
             {
                 return BadRequest();
             }
 
-            if (registerTenant.Password != registerTenant.ConfirmPassword)
+            if (request.Password != request.ConfirmPassword)
             {
                 return BadRequest(new ErrorResponse("The passwords do not match!"));
             }
 
-            var user = new IdentityUser
-            {
-                UserName = registerTenant.Email,
-                Email = registerTenant.Email
-            };
-
-            IdentityResult result = await userManager.CreateAsync(user, registerTenant.Password).ConfigureAwait(false);
+            IRegisterTenantResult result = await tenantRepository.RegisterTenant(request.Email, request.Email, request.Password).ConfigureAwait(false);
 
             if (!result.Succeeded)
             {
-                return BadRequest(new ErrorResponse(result.Errors.Select(e => e.Description)));
+                return BadRequest(new ErrorResponse(result.Errors));
             }
 
-            await signInManager.SignInAsync(user, true).ConfigureAwait(false);
+            bool signOnResult = await tenantRepository.SignInTenant(request.Email, request.Password).ConfigureAwait(false);
+
+            if (!signOnResult)
+            {
+                return StatusCode(500, new ErrorResponse("Account created but unable to sign in user"));
+            }
 
             return NoContent();
         }
