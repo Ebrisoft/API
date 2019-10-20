@@ -14,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SQLServer;
-using SQLServer.MockRepositories;
 using SQLServer.Repositories;
 
 #pragma warning disable CA1822 // Mark members as static

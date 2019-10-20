@@ -49,9 +49,7 @@ namespace SQLServer.Repositories
 
         public async Task<bool> SignInTenant(string username, string password)
         {
-            IdentityUser user = await userManager.FindByNameAsync(username).ConfigureAwait(false);
-
-            SignInResult result = await signInManager.PasswordSignInAsync(user, password, true, false).ConfigureAwait(false);
+            SignInResult result = await signInManager.PasswordSignInAsync(username, password, true, false).ConfigureAwait(false);
 
             return result.Succeeded;
         }
