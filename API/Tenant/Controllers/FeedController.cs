@@ -1,13 +1,12 @@
 ﻿using Abstractions.Models;
 using Abstractions.Repositories;
-using API.Endpoints;
-using API.Models.Tenant;
+using API.Tenant.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Controllers.Tenant
+namespace API.Tenant.Controllers
 {
     [ApiController]
     public class FeedController : ControllerBase
@@ -28,7 +27,7 @@ namespace API.Controllers.Tenant
         //  Methods
         //  =======
 
-        [HttpPost(TenantEndpoints.GetFeed)]
+        [HttpPost(Endpoints.GetFeed)]
         public async Task<ActionResult<IEnumerable<Issue>>> GetFeed()
         {
             IEnumerable<IIssue> searchResults = await issueRepository.GetAllIssues().ConfigureAwait(false);

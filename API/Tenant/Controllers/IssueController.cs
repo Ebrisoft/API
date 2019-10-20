@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abstractions.Models;
 using Abstractions.Repositories;
-using API.Endpoints;
-using API.Models.Tenant;
-using API.Requests;
-using API.Requests.Tenant;
-using Microsoft.AspNetCore.Http;
+using API.Tenant.Models;
+using API.Tenant.Requests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers.Tenant
+namespace API.Tenant.Controllers
 {
     [ApiController]
     public class IssueController : ControllerBase
@@ -32,7 +27,7 @@ namespace API.Controllers.Tenant
         //  Methods
         //  =======
 
-        [HttpPost(TenantEndpoints.GetIssue)]
+        [HttpPost(Endpoints.GetIssue)]
         public async Task<ActionResult<IEnumerable<Issue>>> GetIssue(GetIssue getIssue)
         {
             if (getIssue == null)
@@ -55,7 +50,7 @@ namespace API.Controllers.Tenant
             return Ok(result);
         }
 
-        [HttpPost(TenantEndpoints.CreateIssue)]
+        [HttpPost(Endpoints.CreateIssue)]
         public async Task<ActionResult<IEnumerable<Issue>>> CreateIssue(CreateIssue createIssue)
         {
             if (createIssue == null)

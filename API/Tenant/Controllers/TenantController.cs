@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Abstractions.Models;
 using Abstractions.Repositories;
-using API.Endpoints;
-using API.Models;
-using API.Requests.Tenant;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+using API.Tenant.Requests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers.Tenant
+namespace API.Tenant.Controllers
 {
     [ApiController]
     public class TenantController : ControllerBase
@@ -32,7 +25,7 @@ namespace API.Controllers.Tenant
         //  Methods
         //  =======
 
-        [HttpPost(TenantEndpoints.Register)]
+        [HttpPost(Endpoints.Register)]
         public async Task<ActionResult> Register(Register request)
         {
             if (request == null)
@@ -62,7 +55,7 @@ namespace API.Controllers.Tenant
             return NoContent();
         }
 
-        [HttpPost(TenantEndpoints.SignIn)]
+        [HttpPost(Endpoints.SignIn)]
         public async Task<ActionResult> SignIn(SignIn request)
         {
             if (request == null)
@@ -80,7 +73,7 @@ namespace API.Controllers.Tenant
             return NoContent();
         }
 
-        [HttpPost(TenantEndpoints.SignOut)]
+        [HttpPost(Endpoints.SignOut)]
         public async Task<ActionResult> SignOut()
         {
             await tenantRepository.SignOutTenant().ConfigureAwait(false);

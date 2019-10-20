@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace API.Endpoints
+﻿namespace API.Tenant
 {
-    public static class TenantEndpoints
+    public static class Endpoints
     {
         private const string TenantBase = "api/v1/tenant/";
 

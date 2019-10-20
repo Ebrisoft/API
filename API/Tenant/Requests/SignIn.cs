@@ -1,4 +1,4 @@
-﻿namespace API.Requests.Tenant
+﻿namespace API.Tenant.Requests
 {
     public class SignIn
     {
