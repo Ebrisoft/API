@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,5 +21,6 @@ namespace API.Endpoints
         //  Tenant
 
         public const string RegisterTenant = TenantBase + "registertenant";
+        public const string SignIn = TenantBase + "signin";
     }
 }

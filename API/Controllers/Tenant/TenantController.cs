@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,6 +57,24 @@ namespace API.Controllers.Tenant
             if (!signOnResult)
             {
                 return StatusCode(500, new ErrorResponse("Account created but unable to sign in user."));
+            }
+
+            return NoContent();
+        }
+
+        [HttpPost(TenantEndpoints.SignIn)]
+        public async Task<ActionResult> SignIn(SignIn request)
+        {
+            if (request == null)
+            {
+                return BadRequest();
+            }
+
+            bool result = await tenantRepository.SignInTenant(request.Username, request.Password).ConfigureAwait(false);
+
+            if (!result)
+            {
+                return Unauthorized(new ErrorResponse("Unable to log in tenant."));
             }
 
             return NoContent();
