@@ -42,7 +42,7 @@ namespace API.Controllers.Tenant
 
             if (request.Password != request.ConfirmPassword)
             {
-                return BadRequest(new ErrorResponse("The passwords do not match!"));
+                return BadRequest(new ErrorResponse("The passwords do not match."));
             }
 
             IRegisterTenantResult result = await tenantRepository.RegisterTenant(request.Email, request.Email, request.Password).ConfigureAwait(false);
@@ -56,7 +56,7 @@ namespace API.Controllers.Tenant
 
             if (!signOnResult)
             {
-                return StatusCode(500, new ErrorResponse("Account created but unable to sign in user"));
+                return StatusCode(500, new ErrorResponse("Account created but unable to sign in user."));
             }
 
             return NoContent();
