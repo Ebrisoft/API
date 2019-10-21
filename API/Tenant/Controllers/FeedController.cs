@@ -1,7 +1,6 @@
 ﻿using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
-using API.Tenant.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -31,11 +30,11 @@ namespace API.Tenant.Controllers
         //  =======
 
         [HttpPost(Endpoints.GetFeed)]
-        public async Task<ActionResult<IEnumerable<Issue>>> GetFeed()
+        public async Task<ActionResult<IEnumerable<Response.Issue>>> GetFeed()
         {
             IEnumerable<IIssue> searchResults = await issueRepository.GetAllIssues().ConfigureAwait(false);
 
-            IEnumerable<Issue> result = searchResults.Select(s => new Issue
+            IEnumerable<Response.Issue> result = searchResults.Select(s => new Response.Issue
             {
                 Content = s.Content
             });

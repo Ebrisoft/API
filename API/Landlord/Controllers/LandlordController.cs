@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
-using API.Landlord.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +32,7 @@ namespace API.Landlord.Controllers
 
         [AllowAnonymous]
         [HttpPost(Endpoints.Register)]
-        public async Task<ActionResult> Register(Register request)
+        public async Task<ActionResult> Register(Request.Register request)
         {
             if (request == null)
             {

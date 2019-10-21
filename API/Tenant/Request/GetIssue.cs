@@ -1,4 +1,4 @@
-﻿namespace API.Tenant.Requests
+﻿namespace API.Tenant.Request
 {
     public class GetIssue
     {

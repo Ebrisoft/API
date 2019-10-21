@@ -2,21 +2,21 @@
 {
     public static class Endpoints
     {
-        private const string TenantBase = "api/v1/tenant/";
+        private const string Base = "api/v1/tenant/";
 
         //  Feed
 
-        public const string GetFeed = TenantBase + "getfeed";
+        public const string GetFeed = Base + "getfeed";
 
         //  Issue
 
-        public const string GetIssue = TenantBase + "getissue";
-        public const string CreateIssue = TenantBase + "createissue";
+        public const string GetIssue = Base + "getissue";
+        public const string CreateIssue = Base + "createissue";
 
         //  Tenant
 
-        public const string Register = TenantBase + "register";
-        public const string SignIn = TenantBase + "signin";
-        public const string SignOut = TenantBase + "signout";
+        public const string Register = Base + "register";
+        public const string SignIn = Base + "signin";
+        public const string SignOut = Base + "signout";
     }
 }

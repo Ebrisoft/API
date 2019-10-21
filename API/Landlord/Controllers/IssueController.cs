@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
-using API.Tenant.Models;
-using API.Tenant.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +29,7 @@ namespace API.Landlord.Controllers
         //  =======
 
         [HttpPost(Endpoints.GetIssue)]
-        public async Task<ActionResult<IEnumerable<Issue>>> GetIssue(GetIssue getIssue)
+        public async Task<ActionResult<IEnumerable<Response.Issue>>> GetIssue(Request.GetIssue getIssue)
         {
             if (getIssue == null)
             {
@@ -45,7 +43,7 @@ namespace API.Landlord.Controllers
                 return NotFound();
             }
 
-            Issue result = new Issue
+            Response.Issue result = new Response.Issue
             {
                 Content = searchResult.Content
             };
@@ -54,7 +52,7 @@ namespace API.Landlord.Controllers
         }
 
         [HttpPost(Endpoints.CreateIssue)]
-        public async Task<ActionResult<IEnumerable<Issue>>> CreateIssue(CreateIssue createIssue)
+        public async Task<ActionResult> CreateIssue(Request.CreateIssue createIssue)
         {
             if (createIssue == null)
             {

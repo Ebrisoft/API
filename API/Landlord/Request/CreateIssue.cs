@@ -1,6 +1,6 @@
-﻿namespace API.Landlord.Models
+﻿namespace API.Landlord.Request
 {
-    public class Issue
+    public class CreateIssue
     {
         //  Properties
         //  ==========

@@ -1,4 +1,4 @@
-﻿namespace API.Landlord.Requests
+﻿namespace API.Tenant.Request
 {
     public class Register
     {

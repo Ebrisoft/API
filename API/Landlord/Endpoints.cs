@@ -2,21 +2,21 @@
 {
     public static class Endpoints
     {
-        private const string LandlordBase = "api/v1/landlord/";
+        private const string Base = "api/v1/landlord/";
 
         //  Feed
 
-        public const string GetFeed = LandlordBase + "getfeed";
+        public const string GetFeed = Base + "getfeed";
 
         //  Issue
 
-        public const string GetIssue = LandlordBase + "getissue";
-        public const string CreateIssue = LandlordBase + "createissue";
+        public const string GetIssue = Base + "getissue";
+        public const string CreateIssue = Base + "createissue";
 
         //  Landlord
 
-        public const string Register = LandlordBase + "register";
-        public const string SignIn = LandlordBase + "signin";
-        public const string SignOut = LandlordBase + "signout";
+        public const string Register = Base + "register";
+        public const string SignIn = Base + "signin";
+        public const string SignOut = Base + "signout";
     }
 }
