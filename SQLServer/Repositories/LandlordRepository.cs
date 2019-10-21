@@ -47,6 +47,7 @@ namespace SQLServer.Repositories
                 };
             }
 
+#warning If the above is successful but this fails then there is a user created with no role
             IdentityResult addRoleIdentityResult = await userManager.AddToRoleAsync(user, Roles.Landlord).ConfigureAwait(false);
 
             return new RegisterLandlordResult
