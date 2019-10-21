@@ -1,4 +1,5 @@
-﻿using Abstractions.Models;
+﻿using Abstractions;
+using Abstractions.Models;
 using Abstractions.Repositories;
 using Microsoft.AspNetCore.Identity;
 using SQLServer.Models;
@@ -17,16 +18,14 @@ namespace SQLServer.Repositories
 
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
 
         //  Constructors
         //  ============
 
-        public TenantRepository(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public TenantRepository(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.roleManager = roleManager;
         }
 
         //  Methods
@@ -51,7 +50,7 @@ namespace SQLServer.Repositories
                 };
             }
 
-            IdentityResult addRoleIdentityResult = await userManager.AddToRoleAsync(user, Abstractions.Roles.Tenant).ConfigureAwait(false);
+            IdentityResult addRoleIdentityResult = await userManager.AddToRoleAsync(user, Roles.Tenant).ConfigureAwait(false);
 
             return new RegisterTenantResult
             {
