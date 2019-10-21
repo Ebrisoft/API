@@ -37,6 +37,7 @@ namespace API
 
             services.AddScoped<IIssueRepository, IssueRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
+            services.AddScoped<ILandlordRepository, LandlordRepository>();
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
