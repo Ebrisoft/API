@@ -1,12 +1,11 @@
-﻿using Abstractions.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SQLServer.Models
 {
-    public class Issue : IIssue
+    public class Issue : Abstractions.Models.Issue
     {
         [Key]
-        public int Id { get; set; }
-        public string Content { get; set; } = null!;
+        public new int Id { get => base.Id; set => base.Id = value; }
+        public new string Content { get => base.Content; set => base.Content = value; }
     }
 }

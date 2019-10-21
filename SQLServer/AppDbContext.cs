@@ -32,18 +32,6 @@ namespace SQLServer
 
             modelBuilder = modelBuilder ?? throw new ArgumentNullException(nameof(modelBuilder));
 
-            modelBuilder.Entity<Issue>().HasData(
-                new Issue
-                {
-                    Id = 1,
-                    Content = "I am #1"
-                },
-                new Issue
-                {
-                    Id = 2,
-                    Content = "I am #2"
-                });
-
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
                 {

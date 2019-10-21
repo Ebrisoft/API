@@ -1,5 +1,5 @@
 ﻿using Abstractions;
-using Abstractions.Models;
+using Abstractions.Models.Results;
 using Abstractions.Repositories;
 using Microsoft.AspNetCore.Identity;
 using SQLServer.Models;

@@ -36,7 +36,7 @@ namespace API.Tenant.Controllers
                 return BadRequest();
             }
 
-            IIssue searchResult = await issueRepository.GetIssueById(getIssue.Id).ConfigureAwait(false);
+            Issue searchResult = await issueRepository.GetIssueById(getIssue.Id).ConfigureAwait(false);
 
             if (searchResult == null)
             {

@@ -1,4 +1,4 @@
-﻿using Abstractions.Models;
+﻿using Abstractions.Models.Results;
 using System.Threading.Tasks;
 
 namespace Abstractions.Repositories

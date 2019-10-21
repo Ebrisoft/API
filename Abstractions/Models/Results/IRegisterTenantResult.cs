@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Abstractions.Models
+namespace Abstractions.Models.Results
 {
-    public interface IRegisterLandlordResult
+    public interface IRegisterTenantResult
     {
         //  Properties
         //  ==========

@@ -29,7 +29,7 @@ namespace SQLServer.Repositories
 
         public async Task<bool> CreateIssue(string content)
         {
-            context.Issues.Add(new Issue
+            context.Issues.Add(new Models.Issue
             {
                 Content = content
             });
@@ -51,12 +51,12 @@ namespace SQLServer.Repositories
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<IEnumerable<IIssue>> GetAllIssues()
+        public async Task<IEnumerable<Abstractions.Models.Issue>> GetAllIssues()
         {
             return context.Issues;
         }
 
-        public async Task<IIssue> GetIssueById(int id)
+        public async Task<Abstractions.Models.Issue> GetIssueById(int id)
         {
             return context.Issues.FirstOrDefault(i => i.Id == id);
         }
