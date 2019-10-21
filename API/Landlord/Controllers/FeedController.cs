@@ -1,17 +1,17 @@
 ﻿using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
-using API.Tenant.Models;
+using API.Landlord.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Tenant.Controllers
+namespace API.Landlord.Controllers
 {
     [ApiController]
-    [Authorize(Roles = Roles.Tenant)]
+    [Authorize(Roles = Roles.Landlord)]
     public class FeedController : ControllerBase
     {
         //  Variables

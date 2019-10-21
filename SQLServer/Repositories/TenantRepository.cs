@@ -17,14 +17,16 @@ namespace SQLServer.Repositories
 
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
         //  Constructors
         //  ============
 
-        public TenantRepository(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public TenantRepository(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
         }
 
         //  Methods
@@ -40,10 +42,21 @@ namespace SQLServer.Repositories
 
             IdentityResult identityResult = await userManager.CreateAsync(user, password).ConfigureAwait(false);
 
+            if (!identityResult.Succeeded)
+            {
+                return new RegisterTenantResult
+                {
+                    Succeeded = identityResult.Succeeded,
+                    Errors = identityResult.Errors.Select(e => e.Description)
+                };
+            }
+
+            IdentityResult addRoleIdentityResult = await userManager.AddToRoleAsync(user, Abstractions.Roles.Tenant).ConfigureAwait(false);
+
             return new RegisterTenantResult
             {
-                Succeeded = identityResult.Succeeded,
-                Errors = identityResult.Errors.Select(e => e.Description)
+                Succeeded = addRoleIdentityResult.Succeeded,
+                Errors = addRoleIdentityResult.Errors.Select(e => e.Description)
             };
         }
 

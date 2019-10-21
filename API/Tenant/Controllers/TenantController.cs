@@ -1,12 +1,15 @@
 ﻿using System.Threading.Tasks;
+using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
 using API.Tenant.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Tenant.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Tenant)]
     public class TenantController : ControllerBase
     {
         //  Variables
@@ -25,6 +28,7 @@ namespace API.Tenant.Controllers
         //  Methods
         //  =======
 
+        [AllowAnonymous]
         [HttpPost(Endpoints.Register)]
         public async Task<ActionResult> Register(Register request)
         {
@@ -55,6 +59,7 @@ namespace API.Tenant.Controllers
             return NoContent();
         }
 
+        [AllowAnonymous]
         [HttpPost(Endpoints.SignIn)]
         public async Task<ActionResult> SignIn(SignIn request)
         {

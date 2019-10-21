@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
 using API.Tenant.Models;
 using API.Tenant.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Tenant.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Tenant)]
     public class IssueController : ControllerBase
     {
         //  Variables

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SQLServer.Models;
 using System;
@@ -41,6 +42,18 @@ namespace SQLServer
                 {
                     Id = 2,
                     Content = "I am #2"
+                });
+
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Name = Abstractions.Roles.Tenant,
+                    NormalizedName = Abstractions.Roles.Tenant.ToUpperInvariant()
+                },
+                new IdentityRole
+                {
+                    Name = Abstractions.Roles.Landlord,
+                    NormalizedName = Abstractions.Roles.Landlord.ToUpperInvariant()
                 });
         }
     }
