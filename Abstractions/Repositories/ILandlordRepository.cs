@@ -9,7 +9,5 @@ namespace Abstractions.Repositories
         //  =======
 
         public Task<IRegisterLandlordResult> Register(string username, string email, string password);
-        public Task<bool> SignIn(string username, string password);
-        public Task SignOut();
     }
 }

@@ -36,6 +36,7 @@ namespace API
             services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
 
             services.AddScoped<IIssueRepository, IssueRepository>();
+            services.AddScoped<ISignInRepository, SignInRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<ILandlordRepository, LandlordRepository>();
 

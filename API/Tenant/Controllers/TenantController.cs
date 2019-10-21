@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
@@ -15,13 +16,15 @@ namespace API.Tenant.Controllers
         //  Variables
         //  =========
 
+        private readonly ISignInRepository signInRepository;
         private readonly ITenantRepository tenantRepository;
 
         //  Constructors
         //  ============
 
-        public TenantController(ITenantRepository tenantRepository)
+        public TenantController(ISignInRepository signInRepository, ITenantRepository tenantRepository)
         {
+            this.signInRepository = signInRepository;
             this.tenantRepository = tenantRepository;
         }
 
@@ -49,40 +52,14 @@ namespace API.Tenant.Controllers
                 return BadRequest(new ErrorResponse(result.Errors));
             }
 
-            bool signOnResult = await tenantRepository.SignInTenant(request.Email, request.Password).ConfigureAwait(false);
+            IEnumerable<string>? roles = await signInRepository.SignIn(request.Email, request.Password).ConfigureAwait(false);
 
-            if (!signOnResult)
+            if (roles == null)
             {
                 return StatusCode(500, new ErrorResponse("Account created but unable to sign in user."));
             }
 
-            return NoContent();
-        }
-
-        [AllowAnonymous]
-        [HttpPost(Endpoints.SignIn)]
-        public async Task<ActionResult> SignIn(SignIn request)
-        {
-            if (request == null)
-            {
-                return BadRequest();
-            }
-
-            bool result = await tenantRepository.SignInTenant(request.Username, request.Password).ConfigureAwait(false);
-
-            if (!result)
-            {
-                return Unauthorized(new ErrorResponse("Unable to log in tenant."));
-            }
-
-            return NoContent();
-        }
-
-        [HttpPost(Endpoints.SignOut)]
-        public async Task<ActionResult> SignOut()
-        {
-            await tenantRepository.SignOutTenant().ConfigureAwait(false);
-            return NoContent();
+            return Ok(new Unauthorized.Response.SignIn(roles));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace API.Tenant.Requests
+﻿namespace API.Unauthorized.Request
 {
     public class SignIn
     {

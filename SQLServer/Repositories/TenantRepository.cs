@@ -3,10 +3,7 @@ using Abstractions.Models;
 using Abstractions.Repositories;
 using Microsoft.AspNetCore.Identity;
 using SQLServer.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SQLServer.Repositories
@@ -58,18 +55,6 @@ namespace SQLServer.Repositories
                 Succeeded = addRoleIdentityResult.Succeeded,
                 Errors = addRoleIdentityResult.Errors.Select(e => e.Description)
             };
-        }
-
-        public async Task<bool> SignInTenant(string username, string password)
-        {
-            SignInResult result = await signInManager.PasswordSignInAsync(username, password, true, false).ConfigureAwait(false);
-
-            return result.Succeeded;
-        }
-
-        public async Task SignOutTenant()
-        {
-            await signInManager.SignOutAsync().ConfigureAwait(false);
         }
     }
 }

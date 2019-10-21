@@ -14,15 +14,13 @@ namespace SQLServer.Repositories
         //  =========
 
         private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
 
         //  Constructors
         //  ============
 
-        public LandlordRepository(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public LandlordRepository(UserManager<IdentityUser> userManager)
         {
             this.userManager = userManager;
-            this.signInManager = signInManager;
         }
 
         //  Methods
@@ -55,18 +53,6 @@ namespace SQLServer.Repositories
                 Succeeded = addRoleIdentityResult.Succeeded,
                 Errors = addRoleIdentityResult.Errors.Select(e => e.Description)
             };
-        }
-
-        public async Task<bool> SignIn(string username, string password)
-        {
-            SignInResult result = await signInManager.PasswordSignInAsync(username, password, true, false).ConfigureAwait(false);
-
-            return result.Succeeded;
-        }
-
-        public async Task SignOut()
-        {
-            await signInManager.SignOutAsync().ConfigureAwait(false);
         }
     }
 }
