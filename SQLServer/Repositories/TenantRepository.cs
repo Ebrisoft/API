@@ -2,7 +2,7 @@
 using Abstractions.Models.Results;
 using Abstractions.Repositories;
 using Microsoft.AspNetCore.Identity;
-using SQLServer.Models;
+using SQLServer.Models.Results;
 using System.Linq;
 using System.Threading.Tasks;
 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Abstractions.Models;
 
 namespace SQLServer.Repositories
 {
@@ -31,17 +32,17 @@ namespace SQLServer.Repositories
 
         public async Task<bool> CreateIssue(int houseId, string content)
         {
-            Abstractions.Models.House? house = await houseRepository.FindById(houseId).ConfigureAwait(false);
+            House? house = await houseRepository.FindById(houseId).ConfigureAwait(false);
 
             if (house == null)
             {
                 return false;
             }
 
-            context.Issues.Add(new Issue
+            context.Issues.Add(new IssueDbo
             {
                 Content = content,
-                House = (House)house
+                House = (HouseDbo)house
             });
 
             try
@@ -60,14 +61,14 @@ namespace SQLServer.Repositories
             return true;
         }
 
-        public async Task<IEnumerable<Abstractions.Models.Issue>> GetAllIssues()
+        public async Task<IEnumerable<Issue>> GetAllIssues()
         {
             return await context.Issues
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
 
-        public async Task<Abstractions.Models.Issue?> GetIssueById(int id)
+        public async Task<Issue?> GetIssueById(int id)
         {
             return await context.Issues
                 .Include(i => i.House)

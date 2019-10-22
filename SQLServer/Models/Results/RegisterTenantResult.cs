@@ -1,9 +1,7 @@
 ﻿using Abstractions.Models.Results;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace SQLServer.Models
+namespace SQLServer.Models.Results
 {
     public class RegisterTenantResult : IRegisterTenantResult
     {
