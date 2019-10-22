@@ -14,6 +14,7 @@ namespace SQLServer
         //  ==========
 
         public DbSet<Issue> Issues { get; set; } = null!;
+        public DbSet<House> Houses { get; set; } = null!;
 
         //  Constructors
         //  ============
@@ -31,6 +32,13 @@ namespace SQLServer
             base.OnModelCreating(modelBuilder);
 
             modelBuilder = modelBuilder ?? throw new ArgumentNullException(nameof(modelBuilder));
+
+            modelBuilder.Entity<House>()
+                .HasKey(h => h.Id);
+
+            modelBuilder.Entity<House>()
+                .HasMany(h => h.Issues)
+                .WithOne(i => i.House);
 
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole

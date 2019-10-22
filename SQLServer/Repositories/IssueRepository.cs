@@ -1,11 +1,11 @@
-﻿using Abstractions.Models;
-using Abstractions.Repositories;
+﻿using Abstractions.Repositories;
 using SQLServer.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace SQLServer.Repositories
 {
@@ -15,34 +15,44 @@ namespace SQLServer.Repositories
         //  =========
 
         private readonly AppDbContext context;
+        private readonly IHouseRepository houseRepository;
 
         //  Constructors
         //  ============
 
-        public IssueRepository(AppDbContext context)
+        public IssueRepository(AppDbContext context, IHouseRepository houseRepository)
         {
             this.context = context;
+            this.houseRepository = houseRepository;
         }
 
         //  Methods
         //  =======
 
-        public async Task<bool> CreateIssue(string content)
+        public async Task<bool> CreateIssue(int houseId, string content)
         {
-            context.Issues.Add(new Models.Issue
+            Abstractions.Models.House? house = await houseRepository.FindById(houseId).ConfigureAwait(false);
+
+            if (house == null)
             {
-                Content = content
+                return false;
+            }
+
+            context.Issues.Add(new Issue
+            {
+                Content = content,
+                House = (House)house
             });
 
             try
             {
                 await context.SaveChangesAsync().ConfigureAwait(false);
             }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException)
             {
                 return false;
             }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+            catch (DbUpdateException)
             {
                 return false;
             }
@@ -50,16 +60,19 @@ namespace SQLServer.Repositories
             return true;
         }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<IEnumerable<Abstractions.Models.Issue>> GetAllIssues()
         {
-            return context.Issues;
+            return await context.Issues
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
 
-        public async Task<Abstractions.Models.Issue> GetIssueById(int id)
+        public async Task<Abstractions.Models.Issue?> GetIssueById(int id)
         {
-            return context.Issues.FirstOrDefault(i => i.Id == id);
+            return await context.Issues
+                .Include(i => i.House)
+                .FirstOrDefaultAsync(i => i.Id == id)
+                .ConfigureAwait(false);
         }
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     }
 }

@@ -50,7 +50,8 @@ namespace API.Tenant.Controllers
 
             return Ok(result);
         }
-
+#warning Needs re-adding
+        /*
         [HttpPost(Endpoints.CreateIssue)]
         public async Task<ActionResult<IEnumerable<Response.Issue>>> CreateIssue(Request.CreateIssue createIssue)
         {
@@ -62,6 +63,6 @@ namespace API.Tenant.Controllers
             bool success = await issueRepository.CreateIssue(createIssue.Content).ConfigureAwait(false);
 
             return success ? NoContent() : StatusCode(500);
-        }
+        }*/
     }
 }

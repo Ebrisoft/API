@@ -10,6 +10,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20191021001730_AddedRoles.cs" />
     <Compile Remove="Migrations\20191021001730_AddedRoles.Designer.cs" />
+    <Compile Remove="Migrations\20191022102113_AddedHouses.cs" />
+    <Compile Remove="Migrations\20191022102113_AddedHouses.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

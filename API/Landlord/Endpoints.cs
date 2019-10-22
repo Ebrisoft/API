@@ -13,6 +13,11 @@
         public const string GetIssue = Base + "getissue";
         public const string CreateIssue = Base + "createissue";
 
+        //  House
+
+        public const string CreateHouse = Base + "createhouse";
+        public const string GetHouse = Base + "gethouse";
+
         //  Landlord
 
         public const string Register = Base + "register";
