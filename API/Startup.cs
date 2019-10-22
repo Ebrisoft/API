@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Abstractions.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using SQLServer.MockRepositories;
+using SQLServer;
+using SQLServer.Repositories;
 
 #pragma warning disable CA1822 // Mark members as static
 
@@ -35,14 +31,23 @@ namespace API
         //  Methods
         //  =======
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
+
+            services.AddScoped<IIssueRepository, IssueRepository>();
+            services.AddScoped<ISignInRepository, SignInRepository>();
+            services.AddScoped<ITenantRepository, TenantRepository>();
+            services.AddScoped<ILandlordRepository, LandlordRepository>();
+
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 8;
+            }).AddEntityFrameworkStores<AppDbContext>();
+
             services.AddControllers();
-            services.AddSingleton<IIssueRepository, MockIssueRepository>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -51,6 +56,8 @@ namespace API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 

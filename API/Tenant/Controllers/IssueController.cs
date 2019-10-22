@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
-using API.Endpoints;
-using API.Models;
-using API.Requests;
-using API.Requests.Tenant;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers.Tenant
+namespace API.Tenant.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Tenant)]
     public class IssueController : ControllerBase
     {
         //  Variables
@@ -32,8 +28,8 @@ namespace API.Controllers.Tenant
         //  Methods
         //  =======
 
-        [HttpPost(TenantEndpoints.GetIssue)]
-        public async Task<ActionResult<IEnumerable<Issue>>> GetIssue(GetIssue getIssue)
+        [HttpPost(Endpoints.GetIssue)]
+        public async Task<ActionResult<IEnumerable<Response.Issue>>> GetIssue(Request.GetIssue getIssue)
         {
             if (getIssue == null)
             {
@@ -47,7 +43,7 @@ namespace API.Controllers.Tenant
                 return NotFound();
             }
 
-            Issue result = new Issue
+            Response.Issue result = new Response.Issue
             {
                 Content = searchResult.Content
             };
@@ -55,8 +51,8 @@ namespace API.Controllers.Tenant
             return Ok(result);
         }
 
-        [HttpPost(TenantEndpoints.CreateIssue)]
-        public async Task<ActionResult<IEnumerable<Issue>>> CreateIssue(CreateIssue createIssue)
+        [HttpPost(Endpoints.CreateIssue)]
+        public async Task<ActionResult<IEnumerable<Response.Issue>>> CreateIssue(Request.CreateIssue createIssue)
         {
             if (createIssue == null)
             {

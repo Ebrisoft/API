@@ -1,6 +1,6 @@
-﻿namespace API.Models
+﻿namespace API.Tenant.Request
 {
-    public class Issue
+    public class CreateIssue
     {
         //  Properties
         //  ==========

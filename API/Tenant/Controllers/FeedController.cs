@@ -1,15 +1,16 @@
-﻿using Abstractions.Models;
+﻿using Abstractions;
+using Abstractions.Models;
 using Abstractions.Repositories;
-using API.Endpoints;
-using API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Controllers.Tenant
+namespace API.Tenant.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Tenant)]
     public class FeedController : ControllerBase
     {
         //  Variables
@@ -28,12 +29,12 @@ namespace API.Controllers.Tenant
         //  Methods
         //  =======
 
-        [HttpPost(TenantEndpoints.GetFeed)]
-        public async Task<ActionResult<IEnumerable<Issue>>> GetFeed()
+        [HttpPost(Endpoints.GetFeed)]
+        public async Task<ActionResult<IEnumerable<Response.Issue>>> GetFeed()
         {
             IEnumerable<IIssue> searchResults = await issueRepository.GetAllIssues().ConfigureAwait(false);
 
-            IEnumerable<Issue> result = searchResults.Select(s => new Issue
+            IEnumerable<Response.Issue> result = searchResults.Select(s => new Response.Issue
             {
                 Content = s.Content
             });

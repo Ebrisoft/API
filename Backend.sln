@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abstractions", "Abstractions\Abstractions.csproj", "{B5489884-40E5-4E63-B6D5-B3DC64414D6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLServer", "SQLServer\SQLServer.csproj", "{AD7D3C8F-6927-44A7-A780-66CE2BB8E51A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLServer", "SQLServer\SQLServer.csproj", "{AD7D3C8F-6927-44A7-A780-66CE2BB8E51A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
