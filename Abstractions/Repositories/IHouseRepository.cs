@@ -1,4 +1,5 @@
 ﻿using Abstractions.Models;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Abstractions.Repositories
@@ -9,5 +10,6 @@ namespace Abstractions.Repositories
         //  =======
         public Task<House?> CreateHouse(string landlordUsername, string content);
         public Task<House?> FindById(int id);
+        public Task<bool> DoesHouseBelongTo(int houseId, string landlordUsername);
     }
 }

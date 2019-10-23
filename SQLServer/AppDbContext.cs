@@ -6,7 +6,7 @@ using System;
 
 namespace SQLServer
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUserDbo>
     {
         //  Properties
         //  ==========
@@ -43,6 +43,9 @@ namespace SQLServer
 
             modelBuilder.Entity<IssueDbo>()
                 .HasKey(h => h.Id);
+
+            modelBuilder.Entity<ApplicationUserDbo>()
+                .HasKey(h => h.Id);
         }
 
         private void SetUpOneToManyRelationships(ModelBuilder modelBuilder)
@@ -50,6 +53,10 @@ namespace SQLServer
             modelBuilder.Entity<HouseDbo>()
                 .HasMany(h => h.Issues)
                 .WithOne(i => i.House);
+            
+            modelBuilder.Entity<ApplicationUserDbo>()
+                .HasMany(l => l.Houses)
+                .WithOne(h => h.Landlord);
         }
 
         private void SeedRoles(ModelBuilder modelBuilder)

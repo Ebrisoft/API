@@ -1,7 +1,9 @@
 ﻿using Abstractions;
+using Abstractions.Models;
 using Abstractions.Models.Results;
 using Abstractions.Repositories;
 using Microsoft.AspNetCore.Identity;
+using SQLServer.Models;
 using SQLServer.Models.Results;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,13 +15,13 @@ namespace SQLServer.Repositories
         //  Variables
         //  =========
 
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<ApplicationUserDbo> userManager;
+        private readonly SignInManager<ApplicationUserDbo> signInManager;
 
         //  Constructors
         //  ============
 
-        public TenantRepository(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public TenantRepository(UserManager<ApplicationUserDbo> userManager, SignInManager<ApplicationUserDbo> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -30,7 +32,7 @@ namespace SQLServer.Repositories
 
         public async Task<IRegisterTenantResult> RegisterTenant(string username, string email, string password)
         {
-            var user = new IdentityUser
+            var user = new ApplicationUserDbo
             {
                 UserName = username,
                 Email = email

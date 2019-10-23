@@ -60,6 +60,7 @@ namespace API.Tenant.Controllers
                 return BadRequest();
             }
 
+#warning Needs refactoring to take the house Id from the house the user lives in
             bool success = await issueRepository.CreateIssue(createIssue.HouseId, createIssue.Content).ConfigureAwait(false);
 
             return success ? NoContent() : StatusCode(500);

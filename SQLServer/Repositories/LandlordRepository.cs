@@ -1,25 +1,32 @@
 ﻿using Abstractions;
+using Abstractions.Models;
 using Abstractions.Models.Results;
 using Abstractions.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SQLServer.Models;
 using SQLServer.Models.Results;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SQLServer.Repositories
 {
     public class LandlordRepository : ILandlordRepository
     {
+
         //  Variables
         //  =========
 
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly AppDbContext appDbContext;
+        private readonly UserManager<ApplicationUserDbo> userManager;
 
         //  Constructors
         //  ============
 
-        public LandlordRepository(UserManager<IdentityUser> userManager)
+        public LandlordRepository(AppDbContext appDbContext, UserManager<ApplicationUserDbo> userManager)
         {
+            this.appDbContext = appDbContext;
             this.userManager = userManager;
         }
 
@@ -28,13 +35,13 @@ namespace SQLServer.Repositories
 
         public async Task<IRegisterLandlordResult> Register(string username, string email, string password)
         {
-            var user = new IdentityUser
+            var landlord = new ApplicationUserDbo
             {
                 UserName = username,
                 Email = email
             };
 
-            IdentityResult identityResult = await userManager.CreateAsync(user, password).ConfigureAwait(false);
+            IdentityResult identityResult = await userManager.CreateAsync(landlord, password).ConfigureAwait(false);
 
             if (!identityResult.Succeeded)
             {
@@ -46,13 +53,28 @@ namespace SQLServer.Repositories
             }
 
 #warning If the above is successful but this fails then there is a user created with no role
-            IdentityResult addRoleIdentityResult = await userManager.AddToRoleAsync(user, Roles.Landlord).ConfigureAwait(false);
+            IdentityResult addRoleIdentityResult = await userManager.AddToRoleAsync(landlord, Roles.Landlord).ConfigureAwait(false);
 
             return new RegisterLandlordResult
             {
                 Succeeded = addRoleIdentityResult.Succeeded,
                 Errors = addRoleIdentityResult.Errors.Select(e => e.Description)
             };
+        }
+
+        public async Task<ApplicationUser?> GetFromUsername(string username)
+        {
+            ApplicationUserDbo landlord = await appDbContext.Users
+                .Include(u => u.Houses)
+                .FirstOrDefaultAsync(u => u.UserName == username)
+                .ConfigureAwait(false);
+
+            if (!await userManager.IsInRoleAsync(landlord, Roles.Landlord).ConfigureAwait(false))
+            {
+                return null;
+            }
+
+            return landlord;
         }
     }
 }

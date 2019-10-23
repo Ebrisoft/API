@@ -16,13 +16,15 @@ namespace API.Landlord.Controllers
         //  =========
 
         private readonly IIssueRepository issueRepository;
+        private readonly IHouseRepository houseRepository;
 
         //  Constructors
         //  ============
 
-        public IssueController(IIssueRepository issueRepository)
+        public IssueController(IIssueRepository issueRepository, IHouseRepository houseRepository)
         {
             this.issueRepository = issueRepository;
+            this.houseRepository = houseRepository;
         }
 
         //  Methods
@@ -59,6 +61,13 @@ namespace API.Landlord.Controllers
         public async Task<ActionResult> CreateIssue(Request.CreateIssue createIssue)
         {
             if (createIssue == null)
+            {
+                return BadRequest();
+            }
+
+            bool isValidHouse = await houseRepository.DoesHouseBelongTo(createIssue.HouseId, HttpContext.User.Identity.Name!).ConfigureAwait(false);
+
+            if (!isValidHouse)
             {
                 return BadRequest();
             }

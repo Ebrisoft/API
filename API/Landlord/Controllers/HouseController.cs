@@ -38,7 +38,7 @@ namespace API.Landlord.Controllers
                 return BadRequest();
             }
 
-            House? house = await houseRepository.CreateHouse("mike", createHouse.Name).ConfigureAwait(false);
+            House? house = await houseRepository.CreateHouse(HttpContext.User.Identity.Name!, createHouse.Name).ConfigureAwait(false);
 
             if (house == null)
             {
