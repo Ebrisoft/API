@@ -17,14 +17,16 @@ namespace SQLServer.Repositories
 
         private readonly AppDbContext context;
         private readonly IHouseRepository houseRepository;
+        private readonly ILandlordRepository landlordRepository;
 
         //  Constructors
         //  ============
 
-        public IssueRepository(AppDbContext context, IHouseRepository houseRepository)
+        public IssueRepository(AppDbContext context, IHouseRepository houseRepository, ILandlordRepository landlordRepository)
         {
             this.context = context;
             this.houseRepository = houseRepository;
+            this.landlordRepository = landlordRepository;
         }
 
         //  Methods
@@ -61,8 +63,21 @@ namespace SQLServer.Repositories
             return true;
         }
 
-        public async Task<IEnumerable<Issue>> GetAllIssues()
+        public async Task<IEnumerable<Issue>> GetAllIssues(string username)
         {
+            ApplicationUser? user = await landlordRepository.GetFromUsername(username).ConfigureAwait(false);
+
+            if (user != null)
+            {
+                return await context.Issues
+                    .Include(i => i.House)
+                        .ThenInclude(h => h.Landlord)
+                    .Where(i => i.House.Landlord.Id == user.Id)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+            }
+
+#warning Needs refactoring once houses have tenants
             return await context.Issues
                 .ToListAsync()
                 .ConfigureAwait(false);
