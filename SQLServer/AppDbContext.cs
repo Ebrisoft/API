@@ -50,13 +50,20 @@ namespace SQLServer
 
         private void SetUpOneToManyRelationships(ModelBuilder modelBuilder)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             modelBuilder.Entity<HouseDbo>()
                 .HasMany(h => h.Issues)
                 .WithOne(i => i.House);
-            
+
             modelBuilder.Entity<ApplicationUserDbo>()
                 .HasMany(l => l.Houses)
                 .WithOne(h => h.Landlord);
+
+            modelBuilder.Entity<ApplicationUserDbo>()
+                .HasOne(l => l.House)
+                .WithMany(h => h.Tenants)
+                .OnDelete(DeleteBehavior.NoAction);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         private void SeedRoles(ModelBuilder modelBuilder)

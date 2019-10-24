@@ -15,14 +15,16 @@ namespace SQLServer.Repositories
 
         private readonly AppDbContext context;
         private readonly ILandlordRepository landlordRepository;
+        private readonly ITenantRepository tenantRepository;
 
         //  Constructors
         //  ============
 
-        public HouseRepository(AppDbContext context, ILandlordRepository landlordRepository)
+        public HouseRepository(AppDbContext context, ILandlordRepository landlordRepository, ITenantRepository tenantRepository)
         {
             this.context = context;
             this.landlordRepository = landlordRepository;
+            this.tenantRepository = tenantRepository;
         }
 
         //  Methods
@@ -76,6 +78,40 @@ namespace SQLServer.Repositories
                 .Include(h => h.Landlord)
                 .FirstOrDefaultAsync(h => h.Id == houseId && h.Landlord.UserName == landlordUsername)
                 .ConfigureAwait(false) != null;
+        }
+
+        public async Task<bool> AddTenant(int houseId, string tenantUsername)
+        {
+            ApplicationUser? tenant = await tenantRepository.GetFromUsername(tenantUsername).ConfigureAwait(false);
+
+            if (tenant == null || tenant.House != null)
+            {
+                return false;
+            }
+
+            House? house = await FindById(houseId).ConfigureAwait(false);
+
+            if (house == null)
+            {
+                return false;
+            }
+
+            tenant.House = house;
+
+            try
+            {
+                await context.SaveChangesAsync().ConfigureAwait(false);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

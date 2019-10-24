@@ -79,5 +79,23 @@ namespace API.Landlord.Controllers
                 })
             });
         }
+
+        [HttpPost(Endpoints.AddTenant)]
+        public async Task<ActionResult> AddTenant(Request.AddTenant addTenant)
+        {
+            if (addTenant == null)
+            {
+                return BadRequest();
+            }
+
+            bool success = await houseRepository.AddTenant(addTenant.HouseId, addTenant.TenantUsername).ConfigureAwait(false);
+
+            if (!success)
+            {
+                return StatusCode(500, new ErrorResponse("Unable to add tenant to house."));
+            }
+
+            return NoContent();
+        }
     }
 }

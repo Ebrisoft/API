@@ -13,6 +13,7 @@ namespace Abstractions.Models
         public string Name { get; set; } = null!;
 
         public ApplicationUser Landlord { get; set; } = null!;
+        public IEnumerable<ApplicationUser> Tenants { get; set; } = null!;
         public IEnumerable<Issue> Issues { get; set; } = null!;
     }
 }

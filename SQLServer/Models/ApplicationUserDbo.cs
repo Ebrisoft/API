@@ -9,6 +9,7 @@ namespace SQLServer.Models
         //  Properties
         //  ==========
 
+        public new HouseDbo? House { get => base.House == null ? null : (HouseDbo)base.House; set => base.House = value; }
         public new IEnumerable<HouseDbo> Houses { get => base.Houses.Cast<HouseDbo>(); set => base.Houses = value; }
     }
 }

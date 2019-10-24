@@ -11,5 +11,6 @@ namespace Abstractions.Repositories
         public Task<House?> CreateHouse(string landlordUsername, string content);
         public Task<House?> FindById(int id);
         public Task<bool> DoesHouseBelongTo(int houseId, string landlordUsername);
+        public Task<bool> AddTenant(int houseId, string tenantUsername);
     }
 }

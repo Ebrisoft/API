@@ -23,5 +23,9 @@
         public const string Register = Base + "register";
         public const string SignIn = Base + "signin";
         public const string SignOut = Base + "signout";
+
+        //  Tenant
+
+        public const string AddTenant = Base + "addtenant";
     }
 }

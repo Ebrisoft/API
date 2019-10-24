@@ -3,6 +3,7 @@ using Abstractions.Models;
 using Abstractions.Models.Results;
 using Abstractions.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SQLServer.Models;
 using SQLServer.Models.Results;
 using System.Linq;
@@ -12,17 +13,20 @@ namespace SQLServer.Repositories
 {
     public class TenantRepository : ITenantRepository
     {
+
         //  Variables
         //  =========
 
+        private readonly AppDbContext appDbContext;
         private readonly UserManager<ApplicationUserDbo> userManager;
         private readonly SignInManager<ApplicationUserDbo> signInManager;
 
         //  Constructors
         //  ============
 
-        public TenantRepository(UserManager<ApplicationUserDbo> userManager, SignInManager<ApplicationUserDbo> signInManager)
+        public TenantRepository(AppDbContext appDbContext, UserManager<ApplicationUserDbo> userManager, SignInManager<ApplicationUserDbo> signInManager)
         {
+            this.appDbContext = appDbContext;
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
@@ -57,6 +61,21 @@ namespace SQLServer.Repositories
                 Succeeded = addRoleIdentityResult.Succeeded,
                 Errors = addRoleIdentityResult.Errors.Select(e => e.Description)
             };
+        }
+
+        public async Task<ApplicationUser?> GetFromUsername(string username)
+        {
+            ApplicationUserDbo tenant = await appDbContext.Users
+                .Include(u => u.House)
+                .FirstOrDefaultAsync(u => u.UserName == username)
+                .ConfigureAwait(false);
+
+            if (!await userManager.IsInRoleAsync(tenant, Roles.Tenant).ConfigureAwait(false))
+            {
+                return null;
+            }
+
+            return tenant;
         }
     }
 }

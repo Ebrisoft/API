@@ -36,7 +36,11 @@ namespace API.Landlord.Controllers
 
             IEnumerable<Response.Issue> result = searchResults.Select(s => new Response.Issue
             {
-                Content = s.Content
+                Content = s.Content,
+                House = new Response.House
+                {
+                    Name = s.House.Name
+                }
             });
 
             return Ok(result);
