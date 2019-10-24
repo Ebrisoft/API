@@ -97,5 +97,58 @@ namespace API.Landlord.Controllers
 
             return NoContent();
         }
+
+        [HttpPost(Endpoints.GetPinboard)]
+        public async Task<ActionResult<Response.Pinboard>> GetPinboard(Request.GetPinboard getPinboard)
+        {
+            if (getPinboard == null)
+            {
+                return BadRequest();
+            }
+
+            bool doesOwn = await houseRepository.DoesHouseBelongTo(getPinboard.HouseId, HttpContext.User.Identity.Name!).ConfigureAwait(false);
+
+            if (!doesOwn)
+            {
+                return BadRequest();
+            }
+
+            string? pinboardText = await houseRepository.GetPinboard(getPinboard.HouseId).ConfigureAwait(false);
+
+            if (pinboardText == null)
+            {
+                return BadRequest();
+            }
+
+            return new Response.Pinboard
+            {
+                Text = pinboardText
+            };
+        }
+
+        [HttpPost(Endpoints.SetPinboard)]
+        public async Task<ActionResult> SetPinboard(Request.SetPinboard setPinboard)
+        {
+            if (setPinboard == null)
+            {
+                return BadRequest();
+            }
+
+            bool doesOwn = await houseRepository.DoesHouseBelongTo(setPinboard.HouseId, HttpContext.User.Identity.Name!).ConfigureAwait(false);
+
+            if (!doesOwn)
+            {
+                return BadRequest();
+            }
+
+            bool success = await houseRepository.SetPinboard(setPinboard.HouseId, setPinboard.Text).ConfigureAwait(false);
+
+            if (!success)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
     }
 }

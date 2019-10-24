@@ -12,6 +12,8 @@ namespace Abstractions.Models
         public int Id { get; set; }
         public string Name { get; set; } = null!;
 
+        public string Pinboard { get; set; } = null!;
+
         public ApplicationUser Landlord { get; set; } = null!;
         public IEnumerable<ApplicationUser> Tenants { get; set; } = null!;
         public IEnumerable<Issue> Issues { get; set; } = null!;

@@ -43,7 +43,8 @@ namespace SQLServer.Repositories
             {
                 Name = name,
                 Issues = new List<IssueDbo>(),
-                Landlord = (ApplicationUserDbo)landlord
+                Landlord = (ApplicationUserDbo)landlord,
+                Pinboard = string.Empty
             };
 
             context.Houses.Add(newHouse);
@@ -80,6 +81,14 @@ namespace SQLServer.Repositories
                 .ConfigureAwait(false) != null;
         }
 
+        public async Task<bool> IsInHouse(int houseId, string tenantUsername)
+        {
+            return await context.Users
+                .Include(u => u.House)
+                .FirstOrDefaultAsync(u => u.UserName == tenantUsername && u.House != null && u.House.Id == houseId)
+                .ConfigureAwait(false) != null;
+        }
+
         public async Task<bool> AddTenant(int houseId, string tenantUsername)
         {
             ApplicationUser? tenant = await tenantRepository.GetFromUsername(tenantUsername).ConfigureAwait(false);
@@ -97,6 +106,42 @@ namespace SQLServer.Repositories
             }
 
             tenant.House = house;
+
+            try
+            {
+                await context.SaveChangesAsync().ConfigureAwait(false);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<string?> GetPinboard(int houseId)
+        {
+            return (await context.Houses
+                .FirstOrDefaultAsync(h => h.Id == houseId)
+                .ConfigureAwait(false))?.Pinboard;
+        }
+
+        public async Task<bool> SetPinboard(int houseId, string pinboardContent)
+        {
+            House house = await context.Houses
+                .FirstOrDefaultAsync(h => h.Id == houseId)
+                .ConfigureAwait(false);
+
+            if (house == null)
+            {
+                return false;
+            }
+
+            house.Pinboard = pinboardContent ?? string.Empty;
 
             try
             {

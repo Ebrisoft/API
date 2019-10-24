@@ -13,6 +13,10 @@
         public const string GetIssue = Base + "getissue";
         public const string CreateIssue = Base + "createissue";
 
+        //  Pinboard
+
+        public const string GetPinboard = Base + "getpinboard";
+
         //  Tenant
 
         public const string Register = Base + "register";
