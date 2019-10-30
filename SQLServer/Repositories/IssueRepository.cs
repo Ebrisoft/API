@@ -1,11 +1,12 @@
-﻿using Abstractions.Models;
-using Abstractions.Repositories;
+﻿using Abstractions.Repositories;
 using SQLServer.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Abstractions.Models;
 
 namespace SQLServer.Repositories
 {
@@ -15,34 +16,46 @@ namespace SQLServer.Repositories
         //  =========
 
         private readonly AppDbContext context;
+        private readonly IHouseRepository houseRepository;
+        private readonly ILandlordRepository landlordRepository;
 
         //  Constructors
         //  ============
 
-        public IssueRepository(AppDbContext context)
+        public IssueRepository(AppDbContext context, IHouseRepository houseRepository, ILandlordRepository landlordRepository)
         {
             this.context = context;
+            this.houseRepository = houseRepository;
+            this.landlordRepository = landlordRepository;
         }
 
         //  Methods
         //  =======
 
-        public async Task<bool> CreateIssue(string content)
+        public async Task<bool> CreateIssue(int houseId, string content)
         {
-            context.Issues.Add(new Issue
+            House? house = await houseRepository.FindById(houseId).ConfigureAwait(false);
+
+            if (house == null)
             {
-                Content = content
+                return false;
+            }
+
+            context.Issues.Add(new IssueDbo
+            {
+                Content = content,
+                House = (HouseDbo)house
             });
 
             try
             {
                 await context.SaveChangesAsync().ConfigureAwait(false);
             }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException)
             {
                 return false;
             }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+            catch (DbUpdateException)
             {
                 return false;
             }
@@ -50,16 +63,32 @@ namespace SQLServer.Repositories
             return true;
         }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<IEnumerable<IIssue>> GetAllIssues()
+        public async Task<IEnumerable<Issue>> GetAllIssues(string username)
         {
-            return context.Issues;
+            ApplicationUser? user = await landlordRepository.GetFromUsername(username).ConfigureAwait(false);
+
+            if (user != null)
+            {
+                return await context.Issues
+                    .Include(i => i.House)
+                        .ThenInclude(h => h.Landlord)
+                    .Where(i => i.House.Landlord.Id == user.Id)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+            }
+
+#warning Needs refactoring once houses have tenants
+            return await context.Issues
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
 
-        public async Task<IIssue> GetIssueById(int id)
+        public async Task<Issue?> GetIssueById(int id)
         {
-            return context.Issues.FirstOrDefault(i => i.Id == id);
+            return await context.Issues
+                .Include(i => i.House)
+                .FirstOrDefaultAsync(i => i.Id == id)
+                .ConfigureAwait(false);
         }
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     }
 }

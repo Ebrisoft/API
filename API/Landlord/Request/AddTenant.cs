@@ -1,11 +1,11 @@
 ﻿namespace API.Landlord.Request
 {
-    public class CreateIssue
+    public class AddTenant
     {
         //  Properties
         //  ==========
 
-        public string Content { get; set; } = null!;
         public int HouseId { get; set; }
+        public string TenantUsername { get; set; } = null!;
     }
 }

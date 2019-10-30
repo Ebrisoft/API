@@ -1,11 +1,9 @@
-﻿using Abstractions.Models;
-using System;
+﻿using Abstractions.Models.Results;
 using System.Collections.Generic;
-using System.Text;
 
-namespace SQLServer.Models
+namespace SQLServer.Models.Results
 {
-    public class RegisterTenantResult : IRegisterTenantResult
+    public class RegisterLandlordResult : IRegisterLandlordResult
     {
         //  Properties
         //  ==========

@@ -9,8 +9,8 @@ namespace Abstractions.Repositories
         //  Methods
         //  =======
 
-        public Task<IEnumerable<IIssue>> GetAllIssues();
-        public Task<IIssue> GetIssueById(int id);
-        public Task<bool> CreateIssue(string content);
+        public Task<IEnumerable<Issue>> GetAllIssues(string username);
+        public Task<Issue?> GetIssueById(int id);
+        public Task<bool> CreateIssue(int houseId, string content);
     }
 }

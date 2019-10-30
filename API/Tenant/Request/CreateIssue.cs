@@ -6,5 +6,6 @@
         //  ==========
 
         public string Content { get; set; } = null!;
+        public int HouseId { get; set; }
     }
 }

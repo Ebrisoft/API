@@ -32,7 +32,7 @@ namespace API.Tenant.Controllers
         [HttpPost(Endpoints.GetFeed)]
         public async Task<ActionResult<IEnumerable<Response.Issue>>> GetFeed()
         {
-            IEnumerable<IIssue> searchResults = await issueRepository.GetAllIssues().ConfigureAwait(false);
+            IEnumerable<Issue> searchResults = await issueRepository.GetAllIssues(HttpContext.User.Identity.Name!).ConfigureAwait(false);
 
             IEnumerable<Response.Issue> result = searchResults.Select(s => new Response.Issue
             {

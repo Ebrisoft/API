@@ -16,13 +16,15 @@ namespace API.Landlord.Controllers
         //  =========
 
         private readonly IIssueRepository issueRepository;
+        private readonly IHouseRepository houseRepository;
 
         //  Constructors
         //  ============
 
-        public IssueController(IIssueRepository issueRepository)
+        public IssueController(IIssueRepository issueRepository, IHouseRepository houseRepository)
         {
             this.issueRepository = issueRepository;
+            this.houseRepository = houseRepository;
         }
 
         //  Methods
@@ -36,7 +38,7 @@ namespace API.Landlord.Controllers
                 return BadRequest();
             }
 
-            IIssue searchResult = await issueRepository.GetIssueById(getIssue.Id).ConfigureAwait(false);
+            Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id).ConfigureAwait(false);
 
             if (searchResult == null)
             {
@@ -45,7 +47,11 @@ namespace API.Landlord.Controllers
 
             Response.Issue result = new Response.Issue
             {
-                Content = searchResult.Content
+                Content = searchResult.Content,
+                House = new Response.House
+                {
+                    Name = searchResult.House.Name
+                }
             };
 
             return Ok(result);
@@ -59,7 +65,14 @@ namespace API.Landlord.Controllers
                 return BadRequest();
             }
 
-            bool success = await issueRepository.CreateIssue(createIssue.Content).ConfigureAwait(false);
+            bool isValidHouse = await houseRepository.DoesHouseBelongTo(createIssue.HouseId, HttpContext.User.Identity.Name!).ConfigureAwait(false);
+
+            if (!isValidHouse)
+            {
+                return BadRequest();
+            }
+
+            bool success = await issueRepository.CreateIssue(createIssue.HouseId, createIssue.Content).ConfigureAwait(false);
 
             return success ? NoContent() : StatusCode(500);
         }

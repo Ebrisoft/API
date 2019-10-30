@@ -1,5 +1,7 @@
-﻿using Abstractions.Repositories;
+﻿using Abstractions.Models;
+using Abstractions.Repositories;
 using Microsoft.AspNetCore.Identity;
+using SQLServer.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,13 +12,13 @@ namespace SQLServer.Repositories
         //  Variables
         //  =========
 
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<ApplicationUserDbo> signInManager;
+        private readonly UserManager<ApplicationUserDbo> userManager;
 
         //  Constructors
         //  ============
 
-        public SignInRepository(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public SignInRepository(SignInManager<ApplicationUserDbo> signInManager, UserManager<ApplicationUserDbo> userManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -34,7 +36,7 @@ namespace SQLServer.Repositories
                 return null;
             }
 
-            IdentityUser user = await userManager.FindByNameAsync(username).ConfigureAwait(false);
+            ApplicationUserDbo user = await userManager.FindByNameAsync(username).ConfigureAwait(false);
 
             IList<string> roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
 

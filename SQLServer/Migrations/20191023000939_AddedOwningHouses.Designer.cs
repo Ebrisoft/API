@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SQLServer;
 
 namespace SQLServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191023000939_AddedOwningHouses")]
+    partial class AddedOwningHouses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace SQLServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f883f619-f8dc-4287-88fa-7ecdf356998a",
-                            ConcurrencyStamp = "208b4de7-823e-4966-ba7c-be7b71797057",
+                            Id = "66c3d71c-93c4-41cb-bab3-c417ee9b0b6f",
+                            ConcurrencyStamp = "022dac6f-7c86-48bc-9288-6fc0e8573c1a",
                             Name = "tenant",
                             NormalizedName = "TENANT"
                         },
                         new
                         {
-                            Id = "49c221fc-c4d8-41dc-9fae-acce71d70c23",
-                            ConcurrencyStamp = "9b072e29-f263-44a4-b78f-9f6374f8c048",
+                            Id = "351372c5-c734-44c0-a76c-8d32a74e7476",
+                            ConcurrencyStamp = "d5f77636-395c-4f7a-be56-8b6f5457aa6a",
                             Name = "landlord",
                             NormalizedName = "LANDLORD"
                         });
@@ -185,9 +187,6 @@ namespace SQLServer.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("HouseId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -222,8 +221,6 @@ namespace SQLServer.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HouseId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -328,14 +325,6 @@ namespace SQLServer.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SQLServer.Models.ApplicationUserDbo", b =>
-                {
-                    b.HasOne("SQLServer.Models.HouseDbo", "House")
-                        .WithMany("Tenants")
-                        .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("SQLServer.Models.HouseDbo", b =>

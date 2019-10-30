@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SQLServer;
+using SQLServer.Models;
 using SQLServer.Repositories;
 
 #pragma warning disable CA1822 // Mark members as static
@@ -39,8 +40,9 @@ namespace API
             services.AddScoped<ISignInRepository, SignInRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<ILandlordRepository, LandlordRepository>();
+            services.AddScoped<IHouseRepository, HouseRepository>();
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<ApplicationUserDbo, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 8;
             }).AddEntityFrameworkStores<AppDbContext>();

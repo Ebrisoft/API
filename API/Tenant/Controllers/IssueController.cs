@@ -36,7 +36,7 @@ namespace API.Tenant.Controllers
                 return BadRequest();
             }
 
-            IIssue searchResult = await issueRepository.GetIssueById(getIssue.Id).ConfigureAwait(false);
+            Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id).ConfigureAwait(false);
 
             if (searchResult == null)
             {
@@ -51,6 +51,7 @@ namespace API.Tenant.Controllers
             return Ok(result);
         }
 
+        
         [HttpPost(Endpoints.CreateIssue)]
         public async Task<ActionResult<IEnumerable<Response.Issue>>> CreateIssue(Request.CreateIssue createIssue)
         {
@@ -59,7 +60,8 @@ namespace API.Tenant.Controllers
                 return BadRequest();
             }
 
-            bool success = await issueRepository.CreateIssue(createIssue.Content).ConfigureAwait(false);
+#warning Needs refactoring to take the house Id from the house the user lives in once houses have tenants
+            bool success = await issueRepository.CreateIssue(createIssue.HouseId, createIssue.Content).ConfigureAwait(false);
 
             return success ? NoContent() : StatusCode(500);
         }
