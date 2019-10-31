@@ -18,6 +18,11 @@
         public const string CreateHouse = Base + "createhouse";
         public const string GetHouse = Base + "gethouse";
 
+        //  Pinboard
+
+        public const string GetPinboard = Base + "getpinboard";
+        public const string SetPinboard = Base + "setpinboard";
+
         //  Landlord
 
         public const string Register = Base + "register";
