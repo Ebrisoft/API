@@ -10,7 +10,7 @@ namespace API.Tenant.Controllers
 {
     [ApiController]
     [Authorize(Roles = Roles.Tenant)]
-    public class IssueController : ControllerBase
+    public class IssueController : APIControllerBase
     {
         //  Variables
         //  =========
@@ -29,18 +29,18 @@ namespace API.Tenant.Controllers
         //  =======
 
         [HttpPost(Endpoints.GetIssue)]
-        public async Task<ActionResult<IEnumerable<Response.Issue>>> GetIssue(Request.GetIssue getIssue)
+        public async Task<ObjectResult> GetIssue(Request.GetIssue getIssue)
         {
             if (getIssue == null)
             {
-                return BadRequest();
+                return NoRequest();
             }
 
             Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id).ConfigureAwait(false);
 
             if (searchResult == null)
             {
-                return NotFound();
+                return NotFound("Issue");
             }
 
             Response.Issue result = new Response.Issue
@@ -53,17 +53,17 @@ namespace API.Tenant.Controllers
 
         
         [HttpPost(Endpoints.CreateIssue)]
-        public async Task<ActionResult<IEnumerable<Response.Issue>>> CreateIssue(Request.CreateIssue createIssue)
+        public async Task<ObjectResult> CreateIssue(Request.CreateIssue createIssue)
         {
             if (createIssue == null)
             {
-                return BadRequest();
+                return NoRequest();
             }
 
 #warning Needs refactoring to take the house Id from the house the user lives in once houses have tenants
             bool success = await issueRepository.CreateIssue(createIssue.HouseId, createIssue.Content).ConfigureAwait(false);
 
-            return success ? NoContent() : StatusCode(500);
+            return success ? NoContent() : ServerError("Unable to create issue.");
         }
     }
 }

@@ -9,12 +9,11 @@ namespace API.Tenant.Controllers
 {
     [ApiController]
     [Authorize(Roles = Roles.Tenant)]
-    public class HouseController : ControllerBase
+    public class HouseController : APIControllerBase
     {
         //  Variables
         //  =========
 
-        private readonly IHouseRepository houseRepository;
         private readonly ITenantRepository tenantRepository;
 
         //  Constructors
@@ -22,7 +21,6 @@ namespace API.Tenant.Controllers
 
         public HouseController(IHouseRepository houseRepository, ITenantRepository tenantRepository)
         {
-            this.houseRepository = houseRepository;
             this.tenantRepository = tenantRepository;
         }
 
@@ -30,19 +28,19 @@ namespace API.Tenant.Controllers
         //  =======
         
         [HttpPost(Endpoints.GetPinboard)]
-        public async Task<ActionResult<Response.Pinboard>> GetPinboard()
+        public async Task<ObjectResult> GetPinboard()
         {
             House? house = (await tenantRepository.GetFromUsername(HttpContext.User.Identity.Name!).ConfigureAwait(false))?.House;
 
             if (house == null)
             {
-                return BadRequest();
+                return BadRequest("No house found.");
             }
 
-            return new Response.Pinboard
+            return Ok(new Response.Pinboard
             {
                 Text = house.Pinboard
-            };
+            });
         }
     }
 }

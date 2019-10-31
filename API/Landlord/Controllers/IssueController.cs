@@ -10,7 +10,7 @@ namespace API.Landlord.Controllers
 {
     [ApiController]
     [Authorize(Roles = Roles.Landlord)]
-    public class IssueController : ControllerBase
+    public class IssueController : APIControllerBase
     {
         //  Variables
         //  =========
@@ -31,50 +31,49 @@ namespace API.Landlord.Controllers
         //  =======
 
         [HttpPost(Endpoints.GetIssue)]
-        public async Task<ActionResult<IEnumerable<Response.Issue>>> GetIssue(Request.GetIssue getIssue)
+        public async Task<ObjectResult> GetIssue(Request.GetIssue getIssue)
         {
             if (getIssue == null)
             {
-                return BadRequest();
+                return NoRequest();
             }
 
             Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id).ConfigureAwait(false);
 
             if (searchResult == null)
             {
-                return NotFound();
+                return NotFound("Could not find Issue.");
             }
 
-            Response.Issue result = new Response.Issue
+            return Ok(new Response.Issue
             {
                 Content = searchResult.Content,
                 House = new Response.House
                 {
                     Name = searchResult.House.Name
                 }
-            };
-
-            return Ok(result);
+            });
         }
 
         [HttpPost(Endpoints.CreateIssue)]
-        public async Task<ActionResult> CreateIssue(Request.CreateIssue createIssue)
+        public async Task<ObjectResult> CreateIssue(Request.CreateIssue createIssue)
         {
             if (createIssue == null)
             {
-                return BadRequest();
+                return NoRequest();
             }
 
             bool isValidHouse = await houseRepository.DoesHouseBelongTo(createIssue.HouseId, HttpContext.User.Identity.Name!).ConfigureAwait(false);
 
             if (!isValidHouse)
             {
-                return BadRequest();
+                return BadRequest("Could not find the house.");
             }
 
             bool success = await issueRepository.CreateIssue(createIssue.HouseId, createIssue.Content).ConfigureAwait(false);
 
-            return success ? NoContent() : StatusCode(500);
+#warning Should return at least ID to created issue
+            return success ? Created("") : ServerError("Unable to create issue");
         }
     }
 }
