@@ -1,20 +1,26 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Middlewares
 {
     public class OptionsMiddleware
     {
+        //  Variables
+        //  =========
+
         private readonly RequestDelegate _next;
+
+        //  Constructors
+        //  ============
 
         public OptionsMiddleware(RequestDelegate next)
         {
             _next = next;
         }
+
+        //  Methods
+        //  =======
 
         public Task Invoke(HttpContext context)
         {
@@ -44,6 +50,9 @@ namespace API.Middlewares
 
     public static class OptionsMiddlewareExtensions
     {
+        //  Methods
+        //  =======
+
         public static IApplicationBuilder UseOptions(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<OptionsMiddleware>();
