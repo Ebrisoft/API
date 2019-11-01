@@ -32,7 +32,7 @@ namespace API.Unauthorized.Controllers
                 return NoRequest();
             }
 
-            IEnumerable<string>? result = await signInRepository.SignIn(request.Username, request.Password).ConfigureAwait(false);
+            IEnumerable<string>? result = await signInRepository.SignIn(request.Email, request.Password).ConfigureAwait(false);
 
             if (result == null)
             {
