@@ -11,7 +11,7 @@ namespace API.Tenant.Controllers
 {
     [ApiController]
     [Authorize(Roles = Roles.Tenant)]
-    public class FeedController : ControllerBase
+    public class FeedController : APIControllerBase
     {
         //  Variables
         //  =========
@@ -30,7 +30,7 @@ namespace API.Tenant.Controllers
         //  =======
 
         [HttpPost(Endpoints.GetFeed)]
-        public async Task<ActionResult<IEnumerable<Response.Issue>>> GetFeed()
+        public async Task<ObjectResult> GetFeed()
         {
             IEnumerable<Issue> searchResults = await issueRepository.GetAllIssues(HttpContext.User.Identity.Name!).ConfigureAwait(false);
 

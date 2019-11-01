@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abstractions.Repositories;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Unauthorized.Controllers
 {
     [ApiController]
-    public class SignInController : ControllerBase
+    public class SignInController : APIControllerBase
     {
         //  Variables
         //  =========
@@ -26,25 +25,25 @@ namespace API.Unauthorized.Controllers
         //  =======
 
         [HttpPost(Endpoints.SignIn)]
-        public async Task<ActionResult> SignIn(Request.SignIn request)
+        public async Task<ObjectResult> SignIn(Request.SignIn request)
         {
             if (request == null)
             {
-                return BadRequest();
+                return NoRequest();
             }
 
             IEnumerable<string>? result = await signInRepository.SignIn(request.Username, request.Password).ConfigureAwait(false);
 
             if (result == null)
             {
-                return Unauthorized(new ErrorResponse("Unable to log in user."));
+                return Unauthorized("Unable to log in user.");
             }
-
+            
             return Ok(new Response.SignIn(result));
         }
 
         [HttpPost(Endpoints.SignOut)]
-        public async Task<ActionResult> SignOut()
+        public async Task<ObjectResult> SignOut()
         {
             await signInRepository.SignOut().ConfigureAwait(false);
             return NoContent();
