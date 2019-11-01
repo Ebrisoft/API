@@ -1,4 +1,5 @@
 using Abstractions.Repositories;
+using API.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -62,6 +63,8 @@ namespace API
             app.UseAuthentication();
 
             app.UseRouting();
+
+            app.UseOptions();
 
             app.UseAuthorization();
 
