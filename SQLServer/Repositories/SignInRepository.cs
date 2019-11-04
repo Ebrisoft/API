@@ -27,16 +27,16 @@ namespace SQLServer.Repositories
         //  Methods
         //  =======
 
-        public async Task<IEnumerable<string>?> SignIn(string username, string password)
+        public async Task<IEnumerable<string>?> SignIn(string email, string password)
         {
-            SignInResult result = await signInManager.PasswordSignInAsync(username, password, true, false).ConfigureAwait(false);
+            SignInResult result = await signInManager.PasswordSignInAsync(email, password, true, false).ConfigureAwait(false);
 
             if (!result.Succeeded)
             {
                 return null;
             }
 
-            ApplicationUserDbo user = await userManager.FindByNameAsync(username).ConfigureAwait(false);
+            ApplicationUserDbo user = await userManager.FindByNameAsync(email).ConfigureAwait(false);
 
             IList<string> roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
 
