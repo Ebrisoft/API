@@ -1,10 +1,7 @@
-﻿namespace API.Tenant.Response
+﻿namespace API.Landlord.Response
 {
     public class ApplicationUser
     {
-        //  Properties
-        //  ==========
-
         public string UserName { get; set; } = null!;
     }
 }

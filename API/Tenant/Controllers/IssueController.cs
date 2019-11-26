@@ -47,7 +47,15 @@ namespace API.Tenant.Controllers
 
             Response.Issue result = new Response.Issue
             {
-                Content = searchResult.Content
+                Id = searchResult.Id,
+                Content = searchResult.Content,
+                CreatedAt = searchResult.CreatedAt,
+                IsResolved = searchResult.IsResolved,
+                Title = searchResult.Title,
+                Author = new Response.ApplicationUser
+                {
+                    UserName = searchResult.Author.UserName
+                }
             };
 
             return Ok(result);

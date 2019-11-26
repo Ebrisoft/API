@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
@@ -49,10 +48,18 @@ namespace API.Landlord.Controllers
 
             return Ok(new Response.Issue
             {
+                Id = searchResult.Id,
+                CreatedAt = searchResult.CreatedAt,
+                IsResolved = searchResult.IsResolved,
+                Title = searchResult.Title,
                 Content = searchResult.Content,
                 House = new Response.House
                 {
                     Name = searchResult.House.Name
+                },
+                Author = new Response.ApplicationUser
+                {
+                    UserName = searchResult.Author.UserName
                 }
             });
         }

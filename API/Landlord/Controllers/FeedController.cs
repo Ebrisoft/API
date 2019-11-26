@@ -36,10 +36,18 @@ namespace API.Landlord.Controllers
 
             IEnumerable<Response.Issue> result = searchResults.Select(s => new Response.Issue
             {
+                Id = s.Id,
+                CreatedAt = s.CreatedAt,
+                IsResolved = s.IsResolved,
+                Title = s.Title,
                 Content = s.Content,
                 House = new Response.House
                 {
                     Name = s.House.Name
+                },
+                Author = new Response.ApplicationUser
+                {
+                    UserName = s.Author.UserName
                 }
             });
 

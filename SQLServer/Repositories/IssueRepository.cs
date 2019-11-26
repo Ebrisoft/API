@@ -84,6 +84,7 @@ namespace SQLServer.Repositories
         {
             return await context.Issues
                 .Include(i => i.House)
+                .Include(i => i.Author)
                 .FirstOrDefaultAsync(i => i.Id == id)
                 .ConfigureAwait(false);
         }
