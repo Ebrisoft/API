@@ -10,5 +10,7 @@ namespace Abstractions.Models
 
         public House? House { get; set; } = null;
         public IEnumerable<House> Houses { get; set; } = null!;
+
+        public IEnumerable<Issue> Issues { get; set; } = null!;
     }
 }

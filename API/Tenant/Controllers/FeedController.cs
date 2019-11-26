@@ -34,9 +34,20 @@ namespace API.Tenant.Controllers
         {
             IEnumerable<Issue> searchResults = await issueRepository.GetAllIssues(HttpContext.User.Identity.Name!).ConfigureAwait(false);
 
-            IEnumerable<Response.Issue> result = searchResults.Select(s => new Response.Issue
-            {
-                Content = s.Content
+            IEnumerable<Response.Issue> result = searchResults.Select(s => {
+                s.Author.Issues = null!;
+
+                return new Response.Issue
+                {
+                    Content = s.Content,
+                    CreatedAt = s.CreatedAt,
+                    IsResolved = s.IsResolved,
+                    Title = s.Title,
+                    Author = new Response.ApplicationUser()
+                    {
+                        UserName = s.Author.UserName
+                    }
+                };
             });
 
             return Ok(result);

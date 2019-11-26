@@ -17,14 +17,16 @@ namespace API.Landlord.Controllers
 
         private readonly IIssueRepository issueRepository;
         private readonly IHouseRepository houseRepository;
+        private readonly ILandlordRepository landlordRepository;
 
         //  Constructors
         //  ============
 
-        public IssueController(IIssueRepository issueRepository, IHouseRepository houseRepository)
+        public IssueController(IIssueRepository issueRepository, IHouseRepository houseRepository, ILandlordRepository landlordRepository)
         {
             this.issueRepository = issueRepository;
             this.houseRepository = houseRepository;
+            this.landlordRepository = landlordRepository;
         }
 
         //  Methods
@@ -63,16 +65,22 @@ namespace API.Landlord.Controllers
                 return NoRequest();
             }
 
-            bool isValidHouse = await houseRepository.DoesHouseBelongTo(createIssue.HouseId, HttpContext.User.Identity.Name!).ConfigureAwait(false);
+            ApplicationUser? landlord = await landlordRepository.GetFromUsername(HttpContext.User.Identity.Name!).ConfigureAwait(false);
 
-            if (!isValidHouse)
+            if (landlord == null)
             {
-                return BadRequest("Could not find the house.");
+                return BadRequest();
             }
 
-            bool success = await issueRepository.CreateIssue(createIssue.HouseId, createIssue.Content).ConfigureAwait(false);
+            House? house = await houseRepository.FindById(createIssue.HouseId).ConfigureAwait(false);
 
-#warning Should return at least ID to created issue
+            if (house == null || house.Landlord.Id != HttpContext.User.Identity.Name!)
+            {
+                return BadRequest();
+            }
+
+            bool success = await issueRepository.CreateIssue(createIssue.Title, createIssue.Content, house, landlord).ConfigureAwait(false);
+
             return success ? Created("") : ServerError("Unable to create issue");
         }
     }
