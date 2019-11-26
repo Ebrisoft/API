@@ -24,7 +24,15 @@ namespace API.Middlewares
 
         public Task Invoke(HttpContext context)
         {
-            context.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+            if (context.Request.Headers.ContainsKey("origin"))
+            {
+                context.Response.Headers.Add("Access-Control-Allow-Origin", context.Request.Headers["origin"]);
+            }
+            else
+            {
+                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            }
+
             context.Response.Headers.Add("Access-Control-Allow-Headers", new[] { "Origin, X-Requested-With, Content-Type, Accept" });
             context.Response.Headers.Add("Access-Control-Allow-Methods", new[] { "GET, POST, PUT, DELETE, OPTIONS" });
             context.Response.Headers.Add("Access-Control-Allow-Credentials", new[] { "true" });
@@ -32,7 +40,7 @@ namespace API.Middlewares
             if (context.Request.Method == "OPTIONS")
             {
                 context.Response.StatusCode = 200;
-                return context.Response.WriteAsync("OK");
+                return context.Response.CompleteAsync();
             }
 
             return _next.Invoke(context);
