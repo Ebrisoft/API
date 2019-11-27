@@ -83,6 +83,11 @@ namespace API.Landlord.Controllers
                 return BadRequest();
             }
 
+            if (createIssue.Priority < 0 || createIssue.Priority > 2)
+            {
+                return BadRequest("The priority needs to be in range 0-2");
+            }
+
             House? house = await houseRepository.FindById(createIssue.HouseId).ConfigureAwait(false);
 
             if (house == null || house.Landlord.Id != landlord.Id)
@@ -90,9 +95,27 @@ namespace API.Landlord.Controllers
                 return BadRequest();
             }
 
-            bool success = await issueRepository.CreateIssue(createIssue.Title, createIssue.Content, house, landlord).ConfigureAwait(false);
+            bool success = await issueRepository.CreateIssue(createIssue.Title, createIssue.Content, house, landlord, createIssue.Priority).ConfigureAwait(false);
 
             return success ? Created() : ServerError("Unable to create issue");
+        }
+
+        [HttpPost(Endpoints.SetPriority)]
+        public async Task<ObjectResult> SetPriority(Request.SetPriority setPriority)
+        {
+            if (setPriority == null)
+            {
+                return NoRequest();
+            }
+
+            if (setPriority.Priority < 0 || setPriority.Priority > 2)
+            {
+                return BadRequest("The priority needs to be in range 0-2");
+            }
+
+            bool success = await issueRepository.SetPriority(setPriority.Id, setPriority.Priority).ConfigureAwait(false);
+
+            return success ? NoContent() : ServerError("Unable to set priority");
         }
     }
 }

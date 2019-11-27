@@ -32,14 +32,15 @@ namespace SQLServer.Repositories
         //  Methods
         //  =======
 
-        public async Task<bool> CreateIssue(string title, string content, House house, ApplicationUser author)
+        public async Task<bool> CreateIssue(string title, string content, House house, ApplicationUser author, int priority = 1)
         {
             context.Issues.Add(new IssueDbo
             {
                 Title = title,
                 Content = content,
                 House = (HouseDbo)house,
-                Author = (ApplicationUserDbo)author
+                Author = (ApplicationUserDbo)author,
+                Priority = priority
             });
 
             try
@@ -50,7 +51,7 @@ namespace SQLServer.Repositories
             {
                 return false;
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 return false;
             }
@@ -87,6 +88,33 @@ namespace SQLServer.Repositories
                 .Include(i => i.Author)
                 .FirstOrDefaultAsync(i => i.Id == id)
                 .ConfigureAwait(false);
+        }
+
+        public async Task<bool> SetPriority(int issueId, int newPriority)
+        {
+            Issue? issue = await GetIssueById(issueId).ConfigureAwait(false);
+
+            if (issue == null)
+            {
+                return false;
+            }
+
+            issue.Priority = newPriority;
+
+            try
+            {
+                await context.SaveChangesAsync().ConfigureAwait(false);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
