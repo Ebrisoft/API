@@ -63,6 +63,11 @@ namespace SQLServer
                 .HasOne(l => l.House)
                 .WithMany(h => h.Tenants)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<IssueDbo>()
+                .HasOne(i => i.Author)
+                .WithMany(a => a.Issues)
+                .OnDelete(DeleteBehavior.NoAction);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 

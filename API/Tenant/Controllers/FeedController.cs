@@ -36,7 +36,15 @@ namespace API.Tenant.Controllers
 
             IEnumerable<Response.Issue> result = searchResults.Select(s => new Response.Issue
             {
-                Content = s.Content
+                Id = s.Id,
+                Content = s.Content,
+                CreatedAt = s.CreatedAt,
+                IsResolved = s.IsResolved,
+                Title = s.Title,
+                Author = new Response.ApplicationUser()
+                {
+                    UserName = s.Author.UserName
+                }
             });
 
             return Ok(result);

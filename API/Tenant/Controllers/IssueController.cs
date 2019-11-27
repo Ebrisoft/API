@@ -16,13 +16,15 @@ namespace API.Tenant.Controllers
         //  =========
 
         private readonly IIssueRepository issueRepository;
+        private readonly ITenantRepository tenantRepository;
 
         //  Constructors
         //  ============
 
-        public IssueController(IIssueRepository issueRepository)
+        public IssueController(IIssueRepository issueRepository, ITenantRepository tenantRepository)
         {
             this.issueRepository = issueRepository;
+            this.tenantRepository = tenantRepository;
         }
 
         //  Methods
@@ -45,7 +47,15 @@ namespace API.Tenant.Controllers
 
             Response.Issue result = new Response.Issue
             {
-                Content = searchResult.Content
+                Id = searchResult.Id,
+                Content = searchResult.Content,
+                CreatedAt = searchResult.CreatedAt,
+                IsResolved = searchResult.IsResolved,
+                Title = searchResult.Title,
+                Author = new Response.ApplicationUser
+                {
+                    UserName = searchResult.Author.UserName
+                }
             };
 
             return Ok(result);
@@ -60,8 +70,19 @@ namespace API.Tenant.Controllers
                 return NoRequest();
             }
 
-#warning Needs refactoring to take the house Id from the house the user lives in once houses have tenants
-            bool success = await issueRepository.CreateIssue(createIssue.HouseId, createIssue.Content).ConfigureAwait(false);
+            ApplicationUser? tenant = await tenantRepository.GetFromUsername(HttpContext.User.Identity.Name!).ConfigureAwait(false);
+
+            if (tenant == null)
+            {
+                return BadRequest();
+            }
+
+            if (tenant.House == null)
+            {
+                return BadRequest("You are not currently in a house!");
+            }
+
+            bool success = await issueRepository.CreateIssue(createIssue.Title, createIssue.Content, tenant.House, tenant).ConfigureAwait(false);
 
             return success ? NoContent() : ServerError("Unable to create issue.");
         }

@@ -32,19 +32,14 @@ namespace SQLServer.Repositories
         //  Methods
         //  =======
 
-        public async Task<bool> CreateIssue(int houseId, string content)
+        public async Task<bool> CreateIssue(string title, string content, House house, ApplicationUser author)
         {
-            House? house = await houseRepository.FindById(houseId).ConfigureAwait(false);
-
-            if (house == null)
-            {
-                return false;
-            }
-
             context.Issues.Add(new IssueDbo
             {
+                Title = title,
                 Content = content,
-                House = (HouseDbo)house
+                House = (HouseDbo)house,
+                Author = (ApplicationUserDbo)author
             });
 
             try
@@ -55,7 +50,7 @@ namespace SQLServer.Repositories
             {
                 return false;
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
                 return false;
             }
@@ -72,6 +67,7 @@ namespace SQLServer.Repositories
                 return await context.Issues
                     .Include(i => i.House)
                         .ThenInclude(h => h.Landlord)
+                    .Include(i => i.Author)
                     .Where(i => i.House.Landlord.Id == user.Id)
                     .ToListAsync()
                     .ConfigureAwait(false);
@@ -79,6 +75,7 @@ namespace SQLServer.Repositories
 
 #warning Needs refactoring once houses have tenants
             return await context.Issues
+                .Include(i => i.Author)
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
@@ -87,6 +84,7 @@ namespace SQLServer.Repositories
         {
             return await context.Issues
                 .Include(i => i.House)
+                .Include(i => i.Author)
                 .FirstOrDefaultAsync(i => i.Id == id)
                 .ConfigureAwait(false);
         }

@@ -1,4 +1,6 @@
-﻿namespace Abstractions.Models
+﻿using System;
+
+namespace Abstractions.Models
 {
     public class Issue
     {
@@ -6,8 +8,15 @@
         //  ==========
 
         public int Id { get; set; }
+        public string Title { get; set; } = null!;
         public string Content { get; set; } = null!;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public bool IsResolved { get; set; }
+        public int Priority { get; set; }
 
         public House House { get; set; } = null!;
+
+        public ApplicationUser Author { get; set; } = null!;
+
     }
 }
