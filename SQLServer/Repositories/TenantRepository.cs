@@ -34,12 +34,14 @@ namespace SQLServer.Repositories
         //  Methods
         //  =======
 
-        public async Task<IRegisterTenantResult> RegisterTenant(string username, string email, string password)
+        public async Task<IRegisterTenantResult> RegisterTenant(string email, string password, string phoneNumber, string name)
         {
             var user = new ApplicationUserDbo
             {
-                UserName = username,
-                Email = email
+                UserName = email,
+                Email = email,
+                PhoneNumber = phoneNumber,
+                Name = name
             };
 
             IdentityResult identityResult = await userManager.CreateAsync(user, password).ConfigureAwait(false);

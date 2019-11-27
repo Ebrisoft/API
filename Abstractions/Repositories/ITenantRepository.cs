@@ -9,7 +9,7 @@ namespace Abstractions.Repositories
         //  Methods
         //  =======
 
-        public Task<IRegisterTenantResult> RegisterTenant(string username, string email, string password);
+        public Task<IRegisterTenantResult> RegisterTenant(string email, string password, string phoneNumber, string Name);
         public Task<ApplicationUser?> GetFromUsername(string username);
     }
 }

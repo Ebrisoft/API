@@ -55,11 +55,15 @@ namespace API.Landlord.Controllers
                 Content = searchResult.Content,
                 House = new Response.House
                 {
+                    Id = searchResult.House.Id,
                     Name = searchResult.House.Name
                 },
                 Author = new Response.ApplicationUser
                 {
-                    UserName = searchResult.Author.UserName
+                    Id = searchResult.Author.Id,
+                    Name = searchResult.Author.Name,
+                    Email = searchResult.Author.Email,
+                    PhoneNumber = searchResult.Author.PhoneNumber
                 }
             });
         }

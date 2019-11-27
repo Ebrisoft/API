@@ -39,12 +39,7 @@ namespace API.Landlord.Controllers
                 return NoRequest();
             }
 
-            if (request.Password != request.ConfirmPassword)
-            {
-                return BadRequest("The passwords do not match.");
-            }
-
-            IRegisterLandlordResult result = await landlordRepository.Register(request.Email, request.Email, request.Password).ConfigureAwait(false);
+            IRegisterLandlordResult result = await landlordRepository.Register(request.Email, request.Password, request.PhoneNumber, request.Name).ConfigureAwait(false);
 
             if (!result.Succeeded)
             {
