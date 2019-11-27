@@ -45,6 +45,7 @@ namespace API.Landlord.Controllers
 
             return Created(new Response.House
             {
+                Id = house.Id,
                 Name = house.Name,
                 Issues = house.Issues.Select(i => new Response.Issue
                 {
