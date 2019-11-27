@@ -92,7 +92,7 @@ namespace API.Landlord.Controllers
 
             bool success = await issueRepository.CreateIssue(createIssue.Title, createIssue.Content, house, landlord).ConfigureAwait(false);
 
-            return success ? Created("") : ServerError("Unable to create issue");
+            return success ? Created() : ServerError("Unable to create issue");
         }
     }
 }
