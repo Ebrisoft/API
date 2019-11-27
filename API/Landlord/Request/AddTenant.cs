@@ -1,11 +1,16 @@
-﻿namespace API.Landlord.Request
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.Landlord.Request
 {
     public class AddTenant
     {
         //  Properties
         //  ==========
 
-        public int HouseId { get; set; }
+        [Required]
+        public int? HouseId { get; set; }
+
+        [Required]
         public string TenantUsername { get; set; } = null!;
     }
 }

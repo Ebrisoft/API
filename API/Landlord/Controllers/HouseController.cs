@@ -37,7 +37,7 @@ namespace API.Landlord.Controllers
             }
 
             House? house = await houseRepository.CreateHouse(HttpContext.User.Identity.Name!, createHouse.Name).ConfigureAwait(false);
-
+            
             if (house == null)
             {
                 return ServerError("Unable to create house.");
@@ -62,7 +62,7 @@ namespace API.Landlord.Controllers
                 return NoRequest();
             }
 
-            House? house = await houseRepository.FindById(getHouse.Id).ConfigureAwait(false);
+            House? house = await houseRepository.FindById(getHouse.Id!.Value).ConfigureAwait(false);
 
             if (house == null)
             {
@@ -87,7 +87,7 @@ namespace API.Landlord.Controllers
                 return NoRequest();
             }
 
-            bool success = await houseRepository.AddTenant(addTenant.HouseId, addTenant.TenantUsername).ConfigureAwait(false);
+            bool success = await houseRepository.AddTenant(addTenant.HouseId!.Value, addTenant.TenantUsername).ConfigureAwait(false);
 
             if (!success)
             {
@@ -105,14 +105,14 @@ namespace API.Landlord.Controllers
                 return NoRequest();
             }
 
-            bool doesOwn = await houseRepository.DoesHouseBelongTo(getPinboard.HouseId, HttpContext.User.Identity.Name!).ConfigureAwait(false);
+            bool doesOwn = await houseRepository.DoesHouseBelongTo(getPinboard.HouseId!.Value, HttpContext.User.Identity.Name!).ConfigureAwait(false);
 
             if (!doesOwn)
             {
                 return BadRequest("You do not own this house.");
             }
 
-            string? pinboardText = await houseRepository.GetPinboard(getPinboard.HouseId).ConfigureAwait(false);
+            string? pinboardText = await houseRepository.GetPinboard(getPinboard.HouseId!.Value).ConfigureAwait(false);
 
             if (pinboardText == null)
             {
@@ -133,14 +133,14 @@ namespace API.Landlord.Controllers
                 return NoRequest();
             }
 
-            bool doesOwn = await houseRepository.DoesHouseBelongTo(setPinboard.HouseId, HttpContext.User.Identity.Name!).ConfigureAwait(false);
+            bool doesOwn = await houseRepository.DoesHouseBelongTo(setPinboard.HouseId!.Value, HttpContext.User.Identity.Name!).ConfigureAwait(false);
 
             if (!doesOwn)
             {
                 return BadRequest("You do not own this house.");
             }
 
-            bool success = await houseRepository.SetPinboard(setPinboard.HouseId, setPinboard.Text).ConfigureAwait(false);
+            bool success = await houseRepository.SetPinboard(setPinboard.HouseId!.Value, setPinboard.Text).ConfigureAwait(false);
 
             if (!success)
             {

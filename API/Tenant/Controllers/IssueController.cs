@@ -37,7 +37,7 @@ namespace API.Tenant.Controllers
                 return NoRequest();
             }
 
-            Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id).ConfigureAwait(false);
+            Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id!.Value).ConfigureAwait(false);
 
             if (searchResult == null)
             {

@@ -1,4 +1,5 @@
 using Abstractions.Repositories;
+using API.Filters;
 using API.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,7 +49,14 @@ namespace API
                 options.Password.RequiredLength = 8;
             }).AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(new ValidationFilter());
+            })
+            .ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

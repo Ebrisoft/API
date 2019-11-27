@@ -1,10 +1,13 @@
-﻿namespace API.Landlord.Request
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.Landlord.Request
 {
     public class GetPinboard
     {
         //  Properties
         //  ==========
 
-        public int HouseId { get; set; }
+        [Required]
+        public int? HouseId { get; set; }
     }
 }

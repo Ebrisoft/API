@@ -39,7 +39,7 @@ namespace API.Landlord.Controllers
                 return NoRequest();
             }
 
-            Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id).ConfigureAwait(false);
+            Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id!.Value).ConfigureAwait(false);
 
             if (searchResult == null)
             {
@@ -83,19 +83,14 @@ namespace API.Landlord.Controllers
                 return BadRequest();
             }
 
-            if (createIssue.Priority < 0 || createIssue.Priority > 2)
-            {
-                return BadRequest("The priority needs to be in range 0-2");
-            }
-
-            House? house = await houseRepository.FindById(createIssue.HouseId).ConfigureAwait(false);
+            House? house = await houseRepository.FindById(createIssue.HouseId!.Value).ConfigureAwait(false);
 
             if (house == null || house.Landlord.Id != landlord.Id)
             {
                 return BadRequest();
             }
 
-            bool success = await issueRepository.CreateIssue(createIssue.Title, createIssue.Content, house, landlord, createIssue.Priority).ConfigureAwait(false);
+            bool success = await issueRepository.CreateIssue(createIssue.Title, createIssue.Content, house, landlord, createIssue.Priority!.Value).ConfigureAwait(false);
 
             return success ? Created() : ServerError("Unable to create issue");
         }
@@ -108,12 +103,7 @@ namespace API.Landlord.Controllers
                 return NoRequest();
             }
 
-            if (setPriority.Priority < 0 || setPriority.Priority > 2)
-            {
-                return BadRequest("The priority needs to be in range 0-2");
-            }
-
-            bool success = await issueRepository.SetPriority(setPriority.Id, setPriority.Priority).ConfigureAwait(false);
+            bool success = await issueRepository.SetPriority(setPriority.Id!.Value, setPriority.Priority!.Value).ConfigureAwait(false);
 
             return success ? NoContent() : ServerError("Unable to set priority");
         }
