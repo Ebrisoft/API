@@ -36,7 +36,7 @@ namespace API.Tenant.Controllers
         {
             if (request == null)
             {
-                return BadRequest();
+                return NoRequest();
             }
 
             IRegisterTenantResult result = await tenantRepository.RegisterTenant(request.Email, request.Password, request.PhoneNumber, request.Name).ConfigureAwait(false);
