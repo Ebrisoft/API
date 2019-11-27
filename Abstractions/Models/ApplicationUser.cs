@@ -8,6 +8,8 @@ namespace Abstractions.Models
         //  Properties
         //  ==========
 
+        public string Name { get; set; } = null!;
+
         public House? House { get; set; } = null;
         public IEnumerable<House> Houses { get; set; } = null!;
 
