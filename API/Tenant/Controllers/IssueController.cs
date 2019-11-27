@@ -54,7 +54,9 @@ namespace API.Tenant.Controllers
                 Title = searchResult.Title,
                 Author = new Response.ApplicationUser
                 {
-                    UserName = searchResult.Author.UserName
+                    Name = searchResult.Author.Name,
+                    Email = searchResult.Author.Email,
+                    PhoneNumber = searchResult.Author.PhoneNumber
                 }
             };
 

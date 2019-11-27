@@ -41,9 +41,11 @@ namespace API.Tenant.Controllers
                 CreatedAt = s.CreatedAt,
                 IsResolved = s.IsResolved,
                 Title = s.Title,
-                Author = new Response.ApplicationUser()
+                Author = new Response.ApplicationUser
                 {
-                    UserName = s.Author.UserName
+                    Name = s.Author.Name,
+                    Email = s.Author.Email,
+                    PhoneNumber = s.Author.PhoneNumber
                 }
             });
 

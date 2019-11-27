@@ -47,7 +47,9 @@ namespace API.Landlord.Controllers
                 },
                 Author = new Response.ApplicationUser
                 {
-                    UserName = s.Author.UserName
+                    Name = s.Author.Name,
+                    Email = s.Author.Email,
+                    PhoneNumber = s.Author.PhoneNumber
                 }
             });
 
