@@ -39,12 +39,7 @@ namespace API.Tenant.Controllers
                 return BadRequest();
             }
 
-            if (request.Password != request.ConfirmPassword)
-            {
-                return BadRequest("The passwords do not match.");
-            }
-
-            IRegisterTenantResult result = await tenantRepository.RegisterTenant(request.Email, request.Email, request.Password).ConfigureAwait(false);
+            IRegisterTenantResult result = await tenantRepository.RegisterTenant(request.Email, request.Password, request.PhoneNumber, request.Name).ConfigureAwait(false);
 
             if (!result.Succeeded)
             {
