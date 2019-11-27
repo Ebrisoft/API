@@ -31,6 +31,12 @@ namespace API
         }
 
         [NonAction]
+        protected ObjectResult Created()
+        {
+            return StatusCode(201, null);
+        }
+
+        [NonAction]
         protected new ObjectResult NoContent()
         {
             return StatusCode(204, null);
