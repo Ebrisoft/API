@@ -1,10 +1,13 @@
-﻿namespace API.Tenant.Request
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.Tenant.Request
 {
     public class GetIssue
     {
         //  Properties
         //  ==========
 
-        public int Id { get; set; }
+        [Required]
+        public int? Id { get; set; }
     }
 }

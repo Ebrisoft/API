@@ -1,11 +1,17 @@
-﻿namespace API.Landlord.Request
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.Landlord.Request
 {
     public class SetPriority
     {
         //  Properties
         //  ==========
 
-        public int Id { get; set; }
-        public int Priority { get; set; }
+        [Required]
+        public int? Id { get; set; }
+
+        [Required]
+        [Range(0, 2)]
+        public int? Priority { get; set; }
     }
 }
