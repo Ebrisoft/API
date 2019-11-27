@@ -12,6 +12,7 @@
 
         public const string GetIssue = Base + "getissue";
         public const string CreateIssue = Base + "createissue";
+        public const string SetPriority = Base + "setpriority";
 
         //  House
 

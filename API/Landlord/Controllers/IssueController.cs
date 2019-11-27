@@ -99,5 +99,23 @@ namespace API.Landlord.Controllers
 
             return success ? Created() : ServerError("Unable to create issue");
         }
+
+        [HttpPost(Endpoints.SetPriority)]
+        public async Task<ObjectResult> SetPriority(Request.SetPriority setPriority)
+        {
+            if (setPriority == null)
+            {
+                return NoRequest();
+            }
+
+            if (setPriority.Priority < 0 || setPriority.Priority > 2)
+            {
+                return BadRequest("The priority needs to be in range 0-2");
+            }
+
+            bool success = await issueRepository.SetPriority(setPriority.Id, setPriority.Priority).ConfigureAwait(false);
+
+            return success ? NoContent() : ServerError("Unable to set priority");
+        }
     }
 }

@@ -89,5 +89,32 @@ namespace SQLServer.Repositories
                 .FirstOrDefaultAsync(i => i.Id == id)
                 .ConfigureAwait(false);
         }
+
+        public async Task<bool> SetPriority(int issueId, int newPriority)
+        {
+            Issue? issue = await GetIssueById(issueId).ConfigureAwait(false);
+
+            if (issue == null)
+            {
+                return false;
+            }
+
+            issue.Priority = newPriority;
+
+            try
+            {
+                await context.SaveChangesAsync().ConfigureAwait(false);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
