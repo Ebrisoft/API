@@ -43,6 +43,7 @@ namespace API.Landlord.Controllers
                 Content = s.Content,
                 House = new Response.House
                 {
+                    Id = s.House.Id,
                     Name = s.House.Name
                 },
                 Author = new Response.ApplicationUser

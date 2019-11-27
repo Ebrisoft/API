@@ -55,6 +55,7 @@ namespace API.Landlord.Controllers
                 Content = searchResult.Content,
                 House = new Response.House
                 {
+                    Id = searchResult.House.Id,
                     Name = searchResult.House.Name
                 },
                 Author = new Response.ApplicationUser
