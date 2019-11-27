@@ -59,6 +59,7 @@ namespace API.Landlord.Controllers
                 },
                 Author = new Response.ApplicationUser
                 {
+                    Id = searchResult.Author.Id,
                     Name = searchResult.Author.Name,
                     Email = searchResult.Author.Email,
                     PhoneNumber = searchResult.Author.PhoneNumber
