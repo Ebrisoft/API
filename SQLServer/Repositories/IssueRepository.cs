@@ -32,14 +32,15 @@ namespace SQLServer.Repositories
         //  Methods
         //  =======
 
-        public async Task<bool> CreateIssue(string title, string content, House house, ApplicationUser author)
+        public async Task<bool> CreateIssue(string title, string content, House house, ApplicationUser author, int priority = 1)
         {
             context.Issues.Add(new IssueDbo
             {
                 Title = title,
                 Content = content,
                 House = (HouseDbo)house,
-                Author = (ApplicationUserDbo)author
+                Author = (ApplicationUserDbo)author,
+                Priority = priority
             });
 
             try
@@ -50,7 +51,7 @@ namespace SQLServer.Repositories
             {
                 return false;
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 return false;
             }
