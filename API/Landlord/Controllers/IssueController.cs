@@ -81,7 +81,7 @@ namespace API.Landlord.Controllers
 
             House? house = await houseRepository.FindById(createIssue.HouseId).ConfigureAwait(false);
 
-            if (house == null || house.Landlord.Id != HttpContext.User.Identity.Name!)
+            if (house == null || house.Landlord.Id != landlord.Id)
             {
                 return BadRequest();
             }
