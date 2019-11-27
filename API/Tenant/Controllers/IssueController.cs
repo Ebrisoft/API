@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
@@ -54,6 +53,7 @@ namespace API.Tenant.Controllers
                 Title = searchResult.Title,
                 Author = new Response.ApplicationUser
                 {
+                    Id = searchResult.Author.Id,
                     Name = searchResult.Author.Name,
                     Email = searchResult.Author.Email,
                     PhoneNumber = searchResult.Author.PhoneNumber

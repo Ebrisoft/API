@@ -43,6 +43,7 @@ namespace API.Tenant.Controllers
                 Title = s.Title,
                 Author = new Response.ApplicationUser
                 {
+                    Id = s.Author.Id,
                     Name = s.Author.Name,
                     Email = s.Author.Email,
                     PhoneNumber = s.Author.PhoneNumber
