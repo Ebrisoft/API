@@ -10,6 +10,6 @@ namespace Abstractions.Repositories
         //  =======
 
         public Task<Contact?> CreateContact(string name, int houseId, string? phoneNumber, string? email);
-        public Task<IEnumerable<Contact>> GetContactsForHouse(int houseId);
+        public Task<IEnumerable<Contact>> GetPhonebook(string username);
     }
 }

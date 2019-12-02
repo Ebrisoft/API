@@ -28,6 +28,10 @@
 
         public const string CreateContact = Base + "createcontact";
 
+        //  PhoneBook
+
+        public const string GetPhoneBook = Base + "getphonebook";
+
         //  Landlord
 
         public const string Register = Base + "register";
