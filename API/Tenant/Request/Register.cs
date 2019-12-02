@@ -16,7 +16,6 @@ namespace API.Tenant.Request
         public string Password { get; set; } = null!;
 
         [Required]
-        //[Phone]
         [RegularExpression(@"^(\+44|0)7[0-9]{9}$", ErrorMessage="The PhoneNumber field is not a valid phone number.")]
         public string PhoneNumber { get; set; } = null!;
 
