@@ -53,6 +53,7 @@ namespace API.Landlord.Controllers
                 IsResolved = searchResult.IsResolved,
                 Title = searchResult.Title,
                 Content = searchResult.Content,
+                Priority = searchResult.Priority,
                 House = new Response.House
                 {
                     Id = searchResult.House.Id,
