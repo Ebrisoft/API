@@ -13,22 +13,19 @@ namespace SQLServer.Repositories
 {
     public class TenantRepository : ITenantRepository
     {
-
         //  Variables
         //  =========
 
-        private readonly AppDbContext appDbContext;
+        private readonly AppDbContext context;
         private readonly UserManager<ApplicationUserDbo> userManager;
-        private readonly SignInManager<ApplicationUserDbo> signInManager;
 
         //  Constructors
         //  ============
 
-        public TenantRepository(AppDbContext appDbContext, UserManager<ApplicationUserDbo> userManager, SignInManager<ApplicationUserDbo> signInManager)
+        public TenantRepository(AppDbContext context, UserManager<ApplicationUserDbo> userManager)
         {
-            this.appDbContext = appDbContext;
+            this.context = context;
             this.userManager = userManager;
-            this.signInManager = signInManager;
         }
 
         //  Methods
@@ -67,7 +64,7 @@ namespace SQLServer.Repositories
 
         public async Task<ApplicationUser?> GetFromUsername(string username)
         {
-            ApplicationUserDbo tenant = await appDbContext.Users
+            ApplicationUserDbo tenant = await context.Users
                 .Include(u => u.House)
                 .FirstOrDefaultAsync(u => u.UserName == username)
                 .ConfigureAwait(false);
@@ -78,6 +75,17 @@ namespace SQLServer.Repositories
             }
 
             return tenant;
+        }
+
+        public async Task<ApplicationUser?> GetLandlord(string username)
+        {
+            ApplicationUser tenant = await context.Users
+                                        .Include(u => u.House)
+                                            .ThenInclude(h => h!.Landlord)
+                                        .FirstOrDefaultAsync(u => u.UserName == username)
+                                        .ConfigureAwait(false);
+
+            return tenant.House?.Landlord;
         }
     }
 }

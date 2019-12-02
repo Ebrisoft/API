@@ -6,27 +6,26 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SQLServer.Models;
 using SQLServer.Models.Results;
+using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SQLServer.Repositories
 {
     public class LandlordRepository : ILandlordRepository
     {
-
         //  Variables
         //  =========
 
-        private readonly AppDbContext appDbContext;
+        private readonly AppDbContext context;
         private readonly UserManager<ApplicationUserDbo> userManager;
 
         //  Constructors
         //  ============
 
-        public LandlordRepository(AppDbContext appDbContext, UserManager<ApplicationUserDbo> userManager)
+        public LandlordRepository(AppDbContext context, UserManager<ApplicationUserDbo> userManager)
         {
-            this.appDbContext = appDbContext;
+            this.context = context;
             this.userManager = userManager;
         }
 
@@ -66,7 +65,7 @@ namespace SQLServer.Repositories
 
         public async Task<ApplicationUser?> GetFromUsername(string username)
         {
-            ApplicationUserDbo landlord = await appDbContext.Users
+            ApplicationUserDbo landlord = await context.Users
                 .Include(u => u.Houses)
                 .FirstOrDefaultAsync(u => u.UserName == username)
                 .ConfigureAwait(false);
@@ -77,6 +76,17 @@ namespace SQLServer.Repositories
             }
 
             return landlord;
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> GetAllTenants(string username)
+        {
+            IEnumerable<ApplicationUserDbo> results = await context.Users
+                                                        .Include(u => u.House)
+                                                            .ThenInclude(h => h.Landlord)
+                                                        .Where(u => u.House != null && u.House.Landlord.UserName == username)
+                                                        .ToListAsync()
+                                                        .ConfigureAwait(false);
+            return results;
         }
     }
 }

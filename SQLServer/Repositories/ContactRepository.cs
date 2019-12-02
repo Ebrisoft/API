@@ -2,7 +2,6 @@
 using Abstractions.Repositories;
 using Microsoft.EntityFrameworkCore;
 using SQLServer.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +28,9 @@ namespace SQLServer.Repositories
             this.landlordRepository = landlordRepository;
             this.tenantRepository = tenantRepository;
         }
+
+        //  Methods
+        //  =======
 
         public async Task<Contact?> CreateContact(string name, int houseId, string? phoneNumber, string? email)
         {
@@ -71,39 +73,52 @@ namespace SQLServer.Repositories
 
             if (user != null)
             {
-                IEnumerable<Contact> landlordResults = await context.Contacts
-                                                        .Include(c => c.House)
-                                                            .ThenInclude(h => h.Landlord)
-                                                        .Where(c => c.House.Landlord.UserName == username)/*
-                                                        .Union(context.Users
-                                                            .Include(u => u.House)
-                                                                .ThenInclude(h => h!.Landlord)
-                                                            .Where(u => u.House != null)
-                                                            .Select(u => new Contact
-                                                            {
-                                                                House = u.House!,
-                                                                Name = u.Name,
-                                                                Email = u.Email,
-                                                                PhoneNumber = u.PhoneNumber
-                                                            }))*/
-                                                        .ToListAsync()
-                                                        .ConfigureAwait(false);
-                return landlordResults;
+                return await GetLandlordPhonebook(username).ConfigureAwait(false);
             }
-            
-            user = await tenantRepository.GetFromUsername(username).ConfigureAwait(false);
+
+            return await GetTenantPhonebook(username).ConfigureAwait(false);
+        }
+
+        private async Task<IEnumerable<Contact>> GetLandlordPhonebook(string username)
+        {
+            List<ContactDbo> results = await context.Contacts
+                                                    .Include(c => c.House)
+                                                        .ThenInclude(h => h.Landlord)
+                                                    .Where(c => c.House.Landlord.UserName == username)
+                                                    .ToListAsync()
+                                                    .ConfigureAwait(false);
+
+            return results.Select(u => new Contact
+            {
+                Name = u.Name,
+                House = u.House!,
+                Email = u.Email,
+                PhoneNumber = u.PhoneNumber
+            });
+        }
+
+        private async Task<IEnumerable<Contact>> GetTenantPhonebook(string username)
+        {
+            ApplicationUser? user = await tenantRepository.GetFromUsername(username).ConfigureAwait(false);
 
             if (user == null || user.House == null)
             {
                 return new List<Contact>();
             }
 
-            IEnumerable<Contact> tenantResults = await context.Contacts
+            IEnumerable<Contact> results = await context.Contacts
                                                     .Include(c => c.House)
                                                     .Where(c => c.House.Id == user.House.Id)
                                                     .ToListAsync()
                                                     .ConfigureAwait(false);
-            return tenantResults;
+
+            return results.Select(u => new Contact
+            {
+                Name = u.Name,
+                House = u.House!,
+                Email = u.Email,
+                PhoneNumber = u.PhoneNumber
+            });
         }
     }
 }
