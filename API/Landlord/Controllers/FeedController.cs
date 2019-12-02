@@ -41,6 +41,7 @@ namespace API.Landlord.Controllers
                 IsResolved = s.IsResolved,
                 Title = s.Title,
                 Content = s.Content,
+                Priority = s.Priority,
                 House = new Response.House
                 {
                     Id = s.House.Id,
