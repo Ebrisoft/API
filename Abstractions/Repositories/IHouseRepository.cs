@@ -1,5 +1,4 @@
 ﻿using Abstractions.Models;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Abstractions.Repositories

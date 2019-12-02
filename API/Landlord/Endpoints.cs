@@ -24,6 +24,10 @@
         public const string GetPinboard = Base + "getpinboard";
         public const string SetPinboard = Base + "setpinboard";
 
+        //  Contact
+
+        public const string CreateContact = Base + "createcontact";
+
         //  Landlord
 
         public const string Register = Base + "register";

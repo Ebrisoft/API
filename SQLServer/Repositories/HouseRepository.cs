@@ -3,7 +3,6 @@ using Abstractions.Repositories;
 using Microsoft.EntityFrameworkCore;
 using SQLServer.Models;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SQLServer.Repositories
