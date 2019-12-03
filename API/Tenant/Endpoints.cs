@@ -17,6 +17,10 @@
 
         public const string GetPinboard = Base + "getpinboard";
 
+        //  PhoneBook
+
+        public const string GetPhoneBook = Base + "getphonebook";
+
         //  Tenant
 
         public const string Register = Base + "register";

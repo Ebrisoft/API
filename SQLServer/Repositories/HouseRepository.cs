@@ -1,4 +1,4 @@
-﻿using Abstractions.Models;
+using Abstractions.Models;
 using Abstractions.Repositories;
 using Microsoft.EntityFrameworkCore;
 using SQLServer.Models;

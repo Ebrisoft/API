@@ -11,5 +11,6 @@ namespace Abstractions.Repositories
 
         public Task<IRegisterTenantResult> RegisterTenant(string email, string password, string phoneNumber, string Name);
         public Task<ApplicationUser?> GetFromUsername(string username);
+        public Task<ApplicationUser?> GetLandlord(string username);
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Abstractions.Models
 {
@@ -17,5 +15,6 @@ namespace Abstractions.Models
         public ApplicationUser Landlord { get; set; } = null!;
         public IEnumerable<ApplicationUser> Tenants { get; set; } = null!;
         public IEnumerable<Issue> Issues { get; set; } = null!;
+        public IEnumerable<Contact> Contacts { get; set; } = null!;
     }
 }

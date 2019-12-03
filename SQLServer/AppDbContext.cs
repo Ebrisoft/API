@@ -13,6 +13,7 @@ namespace SQLServer
 
         public DbSet<IssueDbo> Issues { get; set; } = null!;
         public DbSet<HouseDbo> Houses { get; set; } = null!;
+        public DbSet<ContactDbo> Contacts { get; set; } = null!;
 
         //  Constructors
         //  ============
@@ -42,10 +43,13 @@ namespace SQLServer
                 .HasKey(h => h.Id);
 
             modelBuilder.Entity<IssueDbo>()
-                .HasKey(h => h.Id);
+                .HasKey(i => i.Id);
 
             modelBuilder.Entity<ApplicationUserDbo>()
-                .HasKey(h => h.Id);
+                .HasKey(a => a.Id);
+
+            modelBuilder.Entity<ContactDbo>()
+                .HasKey(c => c.Id);
         }
 
         private void SetUpOneToManyRelationships(ModelBuilder modelBuilder)
@@ -68,6 +72,10 @@ namespace SQLServer
                 .HasOne(i => i.Author)
                 .WithMany(a => a.Issues)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ContactDbo>()
+                .HasOne(c => c.House)
+                .WithMany(h => h.Contacts);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 

@@ -17,13 +17,15 @@ namespace API.Landlord.Controllers
         //  =========
 
         private readonly IHouseRepository houseRepository;
+        private readonly IContactRepository contactRepository;
 
         //  Constructors
         //  ============
 
-        public HouseController(IHouseRepository houseRepository)
+        public HouseController(IHouseRepository houseRepository, IContactRepository contactRepository)
         {
             this.houseRepository = houseRepository;
+            this.contactRepository = contactRepository;
         }
 
         //  Methods
@@ -161,6 +163,31 @@ namespace API.Landlord.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPost(Endpoints.CreateContact)]
+        public async Task<ObjectResult> CreateContact(Request.CreateContact createContact)
+        {
+            if (createContact == null)
+            {
+                return NoRequest();
+            }
+
+            bool belongsTo = await houseRepository.DoesHouseBelongTo(createContact.HouseId!.Value, HttpContext.User.Identity.Name!).ConfigureAwait(false);
+
+            if (!belongsTo)
+            {
+                return BadRequest("House does not exist.");
+            }
+
+            Contact? result = await contactRepository.CreateContact(createContact.Name, createContact.HouseId!.Value, createContact.PhoneNumber, createContact.Email).ConfigureAwait(false);
+            
+            if (result == null)
+            {
+                return ServerError("Unable to create new contact.");
+            }
+
+            return Created();
         }
     }
 }
