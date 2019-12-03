@@ -3,6 +3,7 @@ using Abstractions.Models;
 using Abstractions.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -79,6 +80,18 @@ namespace API.Landlord.Controllers
                     Content = i.Content
                 })
             });
+        }
+
+        [HttpPost(Endpoints.GetHouses)]
+        public async Task<ObjectResult> GetHouses()
+        {
+            IEnumerable<House> houses = await houseRepository.GetAllHousesForLandlord(HttpContext.User.Identity.Name!).ConfigureAwait(false);
+
+            return Ok(houses.Select(h => new Response.House
+            {
+                Id = h.Id,
+                Name = h.Name
+            }));
         }
 
         [HttpPost(Endpoints.AddTenant)]

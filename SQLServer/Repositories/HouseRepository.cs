@@ -1,8 +1,10 @@
-﻿using Abstractions.Models;
+using Abstractions.Models;
 using Abstractions.Repositories;
 using Microsoft.EntityFrameworkCore;
 using SQLServer.Models;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SQLServer.Repositories
@@ -70,6 +72,17 @@ namespace SQLServer.Repositories
                 .Include(h => h.Issues)
                 .FirstOrDefaultAsync(h => h.Id == id)
                 .ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<House>> GetAllHousesForLandlord(string landlordUsername)
+        {
+            IEnumerable<House> results = await context.Houses
+                                            .Include(h => h.Landlord)
+                                            .Where(h => h.Landlord.UserName == landlordUsername)
+                                            .ToListAsync()
+                                            .ConfigureAwait(false);
+
+            return results;
         }
 
         public async Task<bool> DoesHouseBelongTo(int houseId, string landlordUsername)

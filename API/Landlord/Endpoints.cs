@@ -18,6 +18,7 @@
 
         public const string CreateHouse = Base + "createhouse";
         public const string GetHouse = Base + "gethouse";
+        public const string GetHouses = Base + "gethouses";
 
         //  Pinboard
 
