@@ -14,6 +14,7 @@ namespace SQLServer
         public DbSet<IssueDbo> Issues { get; set; } = null!;
         public DbSet<HouseDbo> Houses { get; set; } = null!;
         public DbSet<ContactDbo> Contacts { get; set; } = null!;
+        public DbSet<CommentDbo> Comments { get; set; } = null!;
 
         //  Constructors
         //  ============
@@ -50,22 +51,31 @@ namespace SQLServer
 
             modelBuilder.Entity<ContactDbo>()
                 .HasKey(c => c.Id);
+
+            modelBuilder.Entity<CommentDbo>()
+                .HasKey(c => c.Id);
         }
 
         private void SetUpOneToManyRelationships(ModelBuilder modelBuilder)
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
+
             modelBuilder.Entity<HouseDbo>()
                 .HasMany(h => h.Issues)
                 .WithOne(i => i.House);
 
             modelBuilder.Entity<ApplicationUserDbo>()
-                .HasMany(l => l.Houses)
+                .HasMany(a => a.Houses)
                 .WithOne(h => h.Landlord);
 
             modelBuilder.Entity<ApplicationUserDbo>()
-                .HasOne(l => l.House)
+                .HasOne(a => a.House)
                 .WithMany(h => h.Tenants)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ApplicationUserDbo>()
+                .HasMany(a => a.Comments)
+                .WithOne(c => c.Author)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<IssueDbo>()
@@ -73,9 +83,14 @@ namespace SQLServer
                 .WithMany(a => a.Issues)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<IssueDbo>()
+                .HasMany(i => i.Comments)
+                .WithOne(c => c.Issue);
+
             modelBuilder.Entity<ContactDbo>()
                 .HasOne(c => c.House)
                 .WithMany(h => h.Contacts);
+
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 

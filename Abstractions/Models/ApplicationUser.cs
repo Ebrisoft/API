@@ -9,10 +9,9 @@ namespace Abstractions.Models
         //  ==========
 
         public string Name { get; set; } = null!;
-
         public House? House { get; set; } = null;
         public IEnumerable<House> Houses { get; set; } = null!;
-
         public IEnumerable<Issue> Issues { get; set; } = null!;
+        public IEnumerable<Comment> Comments { get; set; } = null!;
     }
 }
