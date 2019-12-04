@@ -19,16 +19,14 @@ namespace SQLServer.Repositories
 
         private readonly AppDbContext context;
         private readonly UserManager<ApplicationUserDbo> userManager;
-        private readonly IIssueRepository issueRepository;
 
         //  Constructors
         //  ============
 
-        public LandlordRepository(AppDbContext context, UserManager<ApplicationUserDbo> userManager, IIssueRepository issueRepository)
+        public LandlordRepository(AppDbContext context, UserManager<ApplicationUserDbo> userManager)
         {
             this.context = context;
             this.userManager = userManager;
-            this.issueRepository = issueRepository;
         }
 
         //  Methods
@@ -104,7 +102,7 @@ namespace SQLServer.Repositories
                 return false;
             }
 
-            return username == issue.House.Landlord.Id;
+            return username == issue.House.Landlord.UserName;
         }
     }
 }

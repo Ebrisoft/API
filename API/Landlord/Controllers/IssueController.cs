@@ -109,6 +109,7 @@ namespace API.Landlord.Controllers
             return success ? NoContent() : ServerError("Unable to set priority");
         }
 
+        [HttpPost(Endpoints.Archive)]
         public async Task<ObjectResult> Archive(Request.Archive archive)
         {
             if (archive == null)

@@ -143,5 +143,20 @@ namespace SQLServer.Repositories
 
             return true;
         }
+
+        public async Task<bool> IsAuthor(int issueId, string username)
+        {
+            Issue? issue = await context.Issues
+                                    .Include(i => i.Author)
+                                    .FirstOrDefaultAsync(i => i.Id == issueId)
+                                    .ConfigureAwait(false);
+
+            if (issue == null)
+            {
+                return false;
+            }
+
+            return username == issue.Author.UserName;
+        }
     }
 }
