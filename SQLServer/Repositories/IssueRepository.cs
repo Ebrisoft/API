@@ -1,8 +1,6 @@
 ﻿using Abstractions.Repositories;
 using SQLServer.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -100,6 +98,35 @@ namespace SQLServer.Repositories
             }
 
             issue.Priority = newPriority;
+
+            try
+            {
+                await context.SaveChangesAsync().ConfigureAwait(false);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> Archive(int issueId)
+        {
+            Issue? issue = await context.Issues
+                                .FirstOrDefaultAsync(i => i.Id == issueId)
+                                .ConfigureAwait(false);
+
+            if (issue == null)
+            {
+                return false;
+            }
+
+            issue.IsResolved = true;
 
             try
             {

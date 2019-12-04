@@ -19,14 +19,16 @@ namespace SQLServer.Repositories
 
         private readonly AppDbContext context;
         private readonly UserManager<ApplicationUserDbo> userManager;
+        private readonly IIssueRepository issueRepository;
 
         //  Constructors
         //  ============
 
-        public LandlordRepository(AppDbContext context, UserManager<ApplicationUserDbo> userManager)
+        public LandlordRepository(AppDbContext context, UserManager<ApplicationUserDbo> userManager, IIssueRepository issueRepository)
         {
             this.context = context;
             this.userManager = userManager;
+            this.issueRepository = issueRepository;
         }
 
         //  Methods
@@ -82,11 +84,27 @@ namespace SQLServer.Repositories
         {
             IEnumerable<ApplicationUserDbo> results = await context.Users
                                                         .Include(u => u.House)
-                                                            .ThenInclude(h => h.Landlord)
+                                                            .ThenInclude(h => h!.Landlord)
                                                         .Where(u => u.House != null && u.House.Landlord.UserName == username)
                                                         .ToListAsync()
                                                         .ConfigureAwait(false);
             return results;
+        }
+
+        public async Task<bool> DoesOwnHouseForIssue(string username, int issueId)
+        {
+            Issue? issue = await context.Issues
+                                    .Include(i => i.House)
+                                        .ThenInclude(h => h.Landlord)
+                                    .FirstOrDefaultAsync(i => i.Id == issueId)
+                                    .ConfigureAwait(false);
+
+            if (issue == null)
+            {
+                return false;
+            }
+
+            return username == issue.House.Landlord.Id;
         }
     }
 }
