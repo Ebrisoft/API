@@ -108,5 +108,25 @@ namespace API.Landlord.Controllers
 
             return success ? NoContent() : ServerError("Unable to set priority");
         }
+
+        [HttpPost(Endpoints.Archive)]
+        public async Task<ObjectResult> Archive(Request.Archive archive)
+        {
+            if (archive == null)
+            {
+                return NoRequest();
+            }
+
+            bool ownsHouseForIssue = await landlordRepository.DoesOwnHouseForIssue(HttpContext.User.Identity.Name!, archive.Id).ConfigureAwait(false);
+
+            if (!ownsHouseForIssue)
+            {
+                return BadRequest("You do not own the property for this issue.");
+            }
+
+            bool success = await issueRepository.Archive(archive.Id).ConfigureAwait(false);
+
+            return success ? NoContent() : ServerError("Unable to archive the issue.");
+        }
     }
 }
