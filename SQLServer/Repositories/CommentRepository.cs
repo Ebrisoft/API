@@ -26,6 +26,11 @@ namespace SQLServer.Repositories
 
         public async Task<Comment?> CreateComment(string content, ApplicationUser author, Issue issue)
         {
+            if (author == null || issue == null)
+            {
+                return null;
+            }
+
             CommentDbo newComment = new CommentDbo
             {
                 Content = content,
@@ -43,9 +48,27 @@ namespace SQLServer.Repositories
             {
                 return null;
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 return null;
+            }
+
+            if (issue.IsResolved)
+            {
+                issue.IsResolved = false;
+
+                try
+                {
+                    await context.SaveChangesAsync().ConfigureAwait(false);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return null;
+                }
+                catch (DbUpdateException)
+                {
+                    return null;
+                }
             }
 
             return newComment;
