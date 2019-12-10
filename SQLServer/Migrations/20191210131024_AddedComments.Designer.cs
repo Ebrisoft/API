@@ -10,7 +10,7 @@ using SQLServer;
 namespace SQLServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20191204152438_AddedComments")]
+    [Migration("20191210131024_AddedComments")]
     partial class AddedComments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,15 +50,15 @@ namespace SQLServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5e1d3034-952d-41e4-bec0-ed3556d0b248",
-                            ConcurrencyStamp = "9147da59-8425-437a-81fa-712ad67158e4",
+                            Id = "a261053d-e78f-48c9-a2d8-afa60b4baba3",
+                            ConcurrencyStamp = "0ce6a055-638a-4cee-8a0a-819a0e69409c",
                             Name = "tenant",
                             NormalizedName = "TENANT"
                         },
                         new
                         {
-                            Id = "7f33447a-2016-40fa-a7ec-b5c7e8e19164",
-                            ConcurrencyStamp = "d67c81de-6be1-46c1-a458-7a2ff8330c38",
+                            Id = "eeaad422-9c28-4b69-b040-3ea9578699dd",
+                            ConcurrencyStamp = "3d8b7114-c4ba-4294-a886-dc1b4744230c",
                             Name = "landlord",
                             NormalizedName = "LANDLORD"
                         });
@@ -244,8 +244,10 @@ namespace SQLServer.Migrations
 
             modelBuilder.Entity("SQLServer.Models.CommentDbo", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuthorId")
                         .IsRequired()

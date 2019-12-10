@@ -43,7 +43,7 @@ namespace SQLServer.Repositories
             {
                 return null;
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
                 return null;
             }

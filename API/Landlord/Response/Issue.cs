@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace API.Landlord.Response
 {
@@ -17,5 +18,7 @@ namespace API.Landlord.Response
         public ApplicationUser Author { get; set; } = null!;
 
         public House House { get; set; } = null!;
+
+        public IEnumerable<Comment> Comments { get; set; } = null!;
     }
 }

@@ -22,6 +22,10 @@
     <Compile Remove="Migrations\20191126181622_BulkedOutIssues2.Designer.cs" />
     <Compile Remove="Migrations\20191204152005_AddedComments.cs" />
     <Compile Remove="Migrations\20191204152005_AddedComments.Designer.cs" />
+    <Compile Remove="Migrations\20191204152438_AddedComments.cs" />
+    <Compile Remove="Migrations\20191204152438_AddedComments.Designer.cs" />
+    <Compile Remove="Migrations\20191210130514_ChangedCommentIdType.cs" />
+    <Compile Remove="Migrations\20191210130514_ChangedCommentIdType.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

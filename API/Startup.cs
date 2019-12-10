@@ -45,6 +45,7 @@ namespace API
             services.AddScoped<ILandlordRepository, LandlordRepository>();
             services.AddScoped<IHouseRepository, HouseRepository>();
             services.AddScoped<IContactRepository, ContactRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
 
             services.AddIdentity<ApplicationUserDbo, IdentityRole>(options =>
             {

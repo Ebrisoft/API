@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
@@ -17,15 +18,17 @@ namespace API.Landlord.Controllers
         private readonly IIssueRepository issueRepository;
         private readonly IHouseRepository houseRepository;
         private readonly ILandlordRepository landlordRepository;
+        private readonly ICommentRepository commentRepository;
 
         //  Constructors
         //  ============
 
-        public IssueController(IIssueRepository issueRepository, IHouseRepository houseRepository, ILandlordRepository landlordRepository)
+        public IssueController(IIssueRepository issueRepository, IHouseRepository houseRepository, ILandlordRepository landlordRepository, ICommentRepository commentRepository)
         {
             this.issueRepository = issueRepository;
             this.houseRepository = houseRepository;
             this.landlordRepository = landlordRepository;
+            this.commentRepository = commentRepository;
         }
 
         //  Methods
@@ -39,7 +42,7 @@ namespace API.Landlord.Controllers
                 return NoRequest();
             }
 
-            Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id!.Value).ConfigureAwait(false);
+            Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id!.Value, true, true, true).ConfigureAwait(false);
 
             if (searchResult == null)
             {
@@ -65,8 +68,20 @@ namespace API.Landlord.Controllers
                     Name = searchResult.Author.Name,
                     Email = searchResult.Author.Email,
                     PhoneNumber = searchResult.Author.PhoneNumber
-                }
-            });
+                },
+                Comments = searchResult.Comments.Select(c => new Response.Comment
+                {
+                    Author = new Response.ApplicationUser
+                    {
+                        Id = c.Author.Id,
+                        Name = c.Author.Name,
+                        PhoneNumber = c.Author.PhoneNumber,
+                        Email = c.Author.Email
+                    },
+                    Content = c.Content,
+                    CreatedAt = c.CreatedAt
+                })
+            }); ;
         }
 
         [HttpPost(Endpoints.CreateIssue)]
@@ -107,6 +122,40 @@ namespace API.Landlord.Controllers
             bool success = await issueRepository.SetPriority(setPriority.Id!.Value, setPriority.Priority!.Value).ConfigureAwait(false);
 
             return success ? NoContent() : ServerError("Unable to set priority");
+        }
+
+        [HttpPost(Endpoints.CreateComment)]
+        public async Task<ObjectResult> CreateComment(Request.CreateComment createComment)
+        {
+            if (createComment == null)
+            {
+                return NoRequest();
+            }
+
+            Issue? issue = await issueRepository.GetIssueById(createComment.IssueId, includeHouse: true, includeComments: true).ConfigureAwait(false);
+
+            if (issue == null)
+            {
+                return BadRequest("Issue does not exist");
+            }
+
+            bool ownsHouse = await houseRepository.DoesHouseBelongTo(issue.House.Id, HttpContext.User.Identity.Name!).ConfigureAwait(false);
+
+            if (!ownsHouse)
+            {
+                return BadRequest("You do not own this house");
+            }
+
+            ApplicationUser? landlord = await landlordRepository.GetFromUsername(HttpContext.User.Identity.Name!).ConfigureAwait(false);
+
+            if (landlord == null)
+            {
+                return ServerError("Could not find your account");
+            }
+
+            Comment? comment = await commentRepository.CreateComment(createComment.Content, landlord, issue).ConfigureAwait(false);
+
+            return comment != null ? Created() : ServerError("Unable to create comment");
         }
     }
 }

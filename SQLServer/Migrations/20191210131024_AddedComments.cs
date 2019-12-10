@@ -21,7 +21,8 @@ namespace SQLServer.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AuthorId = table.Column<string>(nullable: false),
                     IssueId = table.Column<int>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
@@ -46,12 +47,12 @@ namespace SQLServer.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "5e1d3034-952d-41e4-bec0-ed3556d0b248", "9147da59-8425-437a-81fa-712ad67158e4", "tenant", "TENANT" });
+                values: new object[] { "a261053d-e78f-48c9-a2d8-afa60b4baba3", "0ce6a055-638a-4cee-8a0a-819a0e69409c", "tenant", "TENANT" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "7f33447a-2016-40fa-a7ec-b5c7e8e19164", "d67c81de-6be1-46c1-a458-7a2ff8330c38", "landlord", "LANDLORD" });
+                values: new object[] { "eeaad422-9c28-4b69-b040-3ea9578699dd", "3d8b7114-c4ba-4294-a886-dc1b4744230c", "landlord", "LANDLORD" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_AuthorId",
@@ -72,12 +73,12 @@ namespace SQLServer.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "5e1d3034-952d-41e4-bec0-ed3556d0b248");
+                keyValue: "a261053d-e78f-48c9-a2d8-afa60b4baba3");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "7f33447a-2016-40fa-a7ec-b5c7e8e19164");
+                keyValue: "eeaad422-9c28-4b69-b040-3ea9578699dd");
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",

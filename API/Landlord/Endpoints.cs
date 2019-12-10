@@ -14,6 +14,10 @@
         public const string CreateIssue = Base + "createissue";
         public const string SetPriority = Base + "setpriority";
 
+        //  Comment
+
+        public const string CreateComment = Base + "createcomment";
+
         //  House
 
         public const string CreateHouse = Base + "createhouse";
