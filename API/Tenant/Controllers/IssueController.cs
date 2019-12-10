@@ -78,7 +78,6 @@ namespace API.Tenant.Controllers
             return Ok(result);
         }
 
-        
         [HttpPost(Endpoints.CreateIssue)]
         public async Task<ObjectResult> CreateIssue(Request.CreateIssue createIssue)
         {
@@ -111,7 +110,7 @@ namespace API.Tenant.Controllers
             {
                 return NoRequest();
             }
-
+            
             Issue? issue = await issueRepository.GetIssueById(createComment.IssueId, includeHouse: true).ConfigureAwait(false);
 
             if (issue == null)
@@ -134,6 +133,26 @@ namespace API.Tenant.Controllers
             Comment? comment = await commentRepository.CreateComment(createComment.Content, tenant, issue).ConfigureAwait(false);
 
             return comment != null ? Created() : ServerError("Unable to create comment");
+        }
+
+        [HttpPost(Endpoints.Archive)]
+        public async Task<ObjectResult> Archive(Request.Archive archive)
+        {
+            if (archive == null)
+            {
+                return NoRequest();
+            }
+            
+            bool ownsIssue = await issueRepository.IsAuthor(archive.Id, HttpContext.User.Identity.Name!).ConfigureAwait(false);
+
+            if (!ownsIssue)
+            {
+                return BadRequest("You do not own this issue.");
+            }
+
+            bool success = await issueRepository.Archive(archive.Id).ConfigureAwait(false);
+
+            return success ? NoContent() : ServerError("Unable to archive the issue.");
         }
     }
 }

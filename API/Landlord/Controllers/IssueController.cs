@@ -131,7 +131,7 @@ namespace API.Landlord.Controllers
             {
                 return NoRequest();
             }
-
+            
             Issue? issue = await issueRepository.GetIssueById(createComment.IssueId, includeHouse: true, includeComments: true).ConfigureAwait(false);
 
             if (issue == null)
@@ -156,6 +156,26 @@ namespace API.Landlord.Controllers
             Comment? comment = await commentRepository.CreateComment(createComment.Content, landlord, issue).ConfigureAwait(false);
 
             return comment != null ? Created() : ServerError("Unable to create comment");
+        }
+
+        [HttpPost(Endpoints.Archive)]
+        public async Task<ObjectResult> Archive(Request.Archive archive)
+        {
+            if (archive == null)
+            {
+                return NoRequest();
+            }
+            
+            bool ownsHouseForIssue = await landlordRepository.DoesOwnHouseForIssue(HttpContext.User.Identity.Name!, archive.Id).ConfigureAwait(false);
+
+            if (!ownsHouseForIssue)
+            {
+                return BadRequest("You do not own the property for this issue.");
+            }
+
+            bool success = await issueRepository.Archive(archive.Id).ConfigureAwait(false);
+
+            return success ? NoContent() : ServerError("Unable to archive the issue.");
         }
     }
 }
