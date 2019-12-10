@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Abstractions;
 using Abstractions.Models;
 using Abstractions.Repositories;
@@ -37,7 +38,7 @@ namespace API.Tenant.Controllers
                 return NoRequest();
             }
 
-            Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id!.Value).ConfigureAwait(false);
+            Issue? searchResult = await issueRepository.GetIssueById(getIssue.Id!.Value, true, true, true).ConfigureAwait(false);
 
             if (searchResult == null)
             {
@@ -57,7 +58,19 @@ namespace API.Tenant.Controllers
                     Name = searchResult.Author.Name,
                     Email = searchResult.Author.Email,
                     PhoneNumber = searchResult.Author.PhoneNumber
-                }
+                },
+                Comments = searchResult.Comments.Select(c => new Response.Comment
+                {
+                    Author = new Response.ApplicationUser
+                    {
+                        Email = c.Author.Email,
+                        Id = c.Author.Id,
+                        Name = c.Author.Name,
+                        PhoneNumber = c.Author.PhoneNumber
+                    },
+                    Content = c.Content,
+                    CreatedAt = c.CreatedAt
+                })
             };
 
             return Ok(result);
