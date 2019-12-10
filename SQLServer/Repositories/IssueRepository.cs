@@ -95,7 +95,8 @@ namespace SQLServer.Repositories
 
             if (includeComments)
             {
-                query = query.Include(i => i.Comments);
+                query = query.Include(i => i.Comments)
+                    .ThenInclude(c => c.Author);
             }
             
             return await query

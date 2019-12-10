@@ -17,14 +17,16 @@ namespace API.Tenant.Controllers
 
         private readonly IIssueRepository issueRepository;
         private readonly ITenantRepository tenantRepository;
+        private readonly ICommentRepository commentRepository;
 
         //  Constructors
         //  ============
 
-        public IssueController(IIssueRepository issueRepository, ITenantRepository tenantRepository)
+        public IssueController(IIssueRepository issueRepository, ITenantRepository tenantRepository, ICommentRepository commentRepository)
         {
             this.issueRepository = issueRepository;
             this.tenantRepository = tenantRepository;
+            this.commentRepository = commentRepository;
         }
 
         //  Methods
@@ -100,6 +102,38 @@ namespace API.Tenant.Controllers
             bool success = await issueRepository.CreateIssue(createIssue.Title, createIssue.Content, tenant.House, tenant).ConfigureAwait(false);
 
             return success ? NoContent() : ServerError("Unable to create issue.");
+        }
+    
+        [HttpPost(Endpoints.CreateComment)]
+        public async Task<ObjectResult> CreateComment(Request.CreateComment createComment)
+        {
+            if (createComment == null)
+            {
+                return NoRequest();
+            }
+
+            Issue? issue = await issueRepository.GetIssueById(createComment.IssueId, includeHouse: true).ConfigureAwait(false);
+
+            if (issue == null)
+            {
+                return BadRequest("Cannot find issue");
+            }
+
+            ApplicationUser? tenant = await tenantRepository.GetFromUsername(HttpContext.User.Identity.Name!).ConfigureAwait(false);
+
+            if (tenant == null)
+            {
+                return ServerError("Cannot find your account");
+            }
+
+            if (tenant.House == null || tenant.House.Id != issue.House.Id)
+            {
+                return BadRequest("You are not in the property for this issue");
+            }
+
+            Comment? comment = await commentRepository.CreateComment(createComment.Content, tenant, issue).ConfigureAwait(false);
+
+            return comment != null ? Created() : ServerError("Unable to create comment");
         }
     }
 }

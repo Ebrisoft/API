@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.Landlord.Request
+namespace API.Tenant.Request
 {
     public class CreateComment
     {
@@ -9,6 +9,7 @@ namespace API.Landlord.Request
 
         [Required]
         public int IssueId { get; set; }
+
         [Required]
         public string Content { get; set; } = null!;
     }

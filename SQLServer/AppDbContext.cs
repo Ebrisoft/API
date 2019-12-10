@@ -91,6 +91,10 @@ namespace SQLServer
                 .HasOne(c => c.House)
                 .WithMany(h => h.Contacts);
 
+            modelBuilder.Entity<CommentDbo>()
+                .HasOne(c => c.Author)
+                .WithMany(a => a.Comments);
+
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
