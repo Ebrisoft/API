@@ -13,5 +13,6 @@ namespace SQLServer.Models
         public new IEnumerable<HouseDbo> Houses { get => base.Houses.Cast<HouseDbo>(); set => base.Houses = value; }
         
         public new IEnumerable<IssueDbo> Issues { get => base.Issues.Cast<IssueDbo>(); set => base.Issues = value; }
+        public new IEnumerable<CommentDbo> Comments { get => base.Comments.Cast<CommentDbo>(); set => base.Comments = value; }
     }
 }

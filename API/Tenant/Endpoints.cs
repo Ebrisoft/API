@@ -14,6 +14,10 @@
         public const string CreateIssue = Base + "createissue";
         public const string Archive = Base + "archive";
 
+        //  Comment
+
+        public const string CreateComment = Base + "createcomment";
+
         //  Pinboard
 
         public const string GetPinboard = Base + "getpinboard";

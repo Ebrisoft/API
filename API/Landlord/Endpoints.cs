@@ -15,6 +15,10 @@
         public const string SetPriority = Base + "setpriority";
         public const string Archive = Base + "archive";
 
+        //  Comment
+
+        public const string CreateComment = Base + "createcomment";
+
         //  House
 
         public const string CreateHouse = Base + "createhouse";

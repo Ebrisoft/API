@@ -79,11 +79,27 @@ namespace SQLServer.Repositories
                 .ConfigureAwait(false);
         }
 
-        public async Task<Issue?> GetIssueById(int id)
+        public async Task<Issue?> GetIssueById(int id, bool includeHouse = false, bool includeAuthor = false, bool includeComments = false)
         {
-            return await context.Issues
-                .Include(i => i.House)
-                .Include(i => i.Author)
+            IQueryable<IssueDbo> query = context.Issues.AsQueryable();
+
+            if (includeHouse)
+            {
+                query = query.Include(i => i.House);
+            }
+
+            if (includeAuthor)
+            {
+                query = query.Include(i => i.Author);
+            }
+
+            if (includeComments)
+            {
+                query = query.Include(i => i.Comments)
+                    .ThenInclude(c => c.Author);
+            }
+            
+            return await query
                 .FirstOrDefaultAsync(i => i.Id == id)
                 .ConfigureAwait(false);
         }

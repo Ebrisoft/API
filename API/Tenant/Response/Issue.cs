@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace API.Tenant.Response
 {
@@ -14,5 +15,7 @@ namespace API.Tenant.Response
         public bool IsResolved { get; set; }
 
         public ApplicationUser Author { get; set; } = null!;
+
+        public IEnumerable<Comment> Comments { get; set; } = null!;
     }
 }

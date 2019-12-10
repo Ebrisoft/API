@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Abstractions.Models
 {
@@ -13,10 +14,8 @@ namespace Abstractions.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public bool IsResolved { get; set; }
         public int Priority { get; set; }
-
         public House House { get; set; } = null!;
-
         public ApplicationUser Author { get; set; } = null!;
-
+        public IEnumerable<Comment> Comments { get; set; } = null!;
     }
 }

@@ -18,7 +18,7 @@ namespace API.Landlord.Controllers
         //  =========
 
         private const string CustomContact = "custom";
-        private const string TenantContact = "tentant";
+        private const string TenantContact = "tenant";
 
         //  Variables
         //  =========
