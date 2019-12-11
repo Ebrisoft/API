@@ -37,7 +37,8 @@ namespace API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
+            //services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
+            services.AddDbContextPool<AppDbContext>(options => options.UseInMemoryDatabase("IssueDb"));
 
             services.AddScoped<IIssueRepository, IssueRepository>();
             services.AddScoped<ISignInRepository, SignInRepository>();
